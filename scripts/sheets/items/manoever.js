@@ -1,6 +1,5 @@
 import { IlarisItemSheet } from './item.js';
 
-
 /* template.json
     "manoever": {
       "voraussetzung": "",

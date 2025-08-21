@@ -37,36 +37,36 @@ export function karmaUpdate(html, actor, item) {
         checked = html.find('#lm_vbvk')[0].value;
         item.system.manoever.lm_vbvk.selected = checked;
         Object.assign(updateData, { manoever: { lm_vbvk: { selected: checked } } });
-    }    
+    }
     // Wirkungsdauer verlaengern lm_wkvl
     if (html.find('#lm_wkvl').length > 0) {
         checked = html.find('#lm_wkvl')[0].value;
         item.system.manoever.lm_wkvl.selected = checked;
         Object.assign(updateData, { manoever: { lm_wkvl: { selected: checked } } });
-    }   
+    }
     // Zaubertechnik ignorieren lm_ltig
     if (html.find('#lm_ltig').length > 0) {
         checked = html.find('#lm_ltig')[0].value;
         item.system.manoever.lm_ltig.selected = checked;
         Object.assign(updateData, { manoever: { lm_ltig: { selected: checked } } });
-    }   
+    }
     // Kosten sparen lm_kosp
     if (html.find('#lm_kosp').length > 0) {
         checked = html.find('#lm_kosp')[0].value;
         item.system.manoever.lm_kosp.selected = checked;
         Object.assign(updateData, { manoever: { lm_kosp: { selected: checked } } });
-    } 
+    }
     // Zeremonie lm_zere
     if (html.find('#lm_zere').length > 0) {
         checked = html.find('#lm_zere')[0].value;
         console.log('Zeremonie ', checked);
         item.system.manoever.lm_zere.selected = checked;
         Object.assign(updateData, { manoever: { lm_zere: { selected: checked } } });
-    } 
+    }
     // Opferung lm_opfe
     if (html.find('#lm_opfe').length > 0) {
         checked = html.find('#lm_opfe')[0].checked;
         item.system.manoever.lm_opfe.selected = checked;
         Object.assign(updateData, { manoever: { lm_opfe: { selected: checked } } });
-    } 
+    }
 }
