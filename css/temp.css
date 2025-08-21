@@ -127,14 +127,14 @@
 }
 
 .ilaris .titel-input {
-  font-size: 32px;
-  border: None;
+  font-size: 32px; 
+  border: None; 
   color: rgb(83, 0, 0);
   font-family: var(--font-andada);
 }
 
 input.titel-input {
-  font-size: 32px;
+  font-size: 32px; 
   color: rgb(83, 0, 0);
   font-family: var(--font-andada);
 }
@@ -150,6 +150,7 @@ input.titel-input {
   color: rgb(54, 37, 37); /*rgb(83, 0, 0);*/
   border: none;
 }
+
 
 .kreatur-header textarea {
   border: none;
@@ -192,7 +193,8 @@ input.titel-input {
   resize: none;
 }
 
+
 .hangingindent {
-  padding-left: 22px;
-  text-indent: -22px;
+  padding-left: 22px ;
+  text-indent: -22px ;
 }

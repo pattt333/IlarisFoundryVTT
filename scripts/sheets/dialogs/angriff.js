@@ -1,26 +1,29 @@
-import { roll_crit_message, get_statuseffect_by_id } from '../../common/wuerfel/wuerfel_misc.js';
-import { signed } from '../../common/wuerfel/chatutilities.js';
+import {
+    roll_crit_message,
+    get_statuseffect_by_id,
+} from '../../common/wuerfel/wuerfel_misc.js';
+import {signed} from '../../common/wuerfel/chatutilities.js'
+
 
 export class AngriffDialog extends Dialog {
     constructor(actor, item) {
-        const dialog = { title: `Kampf: ${item.name}` };
-        const options = { template: 'systems/Ilaris/templates/sheets/dialogs/angriff.html' };
+        const dialog = {title: `Kampf: ${item.name}`};
+        const options = {template: 'systems/Ilaris/templates/sheets/dialogs/angriff.html'}
         super(dialog, options);
         // this can be probendialog (more abstract)
         this.item = item;
         this.actor = item.actor;
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor });
-        this.rollmode = game.settings.get('core', 'rollMode'); // public, private....
-        this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode'); // TODO: either manoever or dialog property.
+        this.rollmode = game.settings.get("core", "rollMode");  // public, private.... 
+        this.item.system.manoever.rllm.selected = game.settings.get("core", "rollMode");  // TODO: either manoever or dialog property.
         this.fumble_val = 1;
         if (this.item.system.eigenschaften.unberechenbar) {
             this.fumble_val = 2;
         }
-        this.aufbauendeManoeverAktivieren();
+        this.aufbauendeManoeverAktivieren()
     }
 
-    async getData() {
-        // damit wird das template gefüttert
+    async getData () { // damit wird das template gefüttert
         return {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '0',
@@ -28,27 +31,28 @@ export class AngriffDialog extends Dialog {
             rollModes: CONFIG.Dice.rollModes,
             // defaultRollMode: this.rollmode,
             item: this.item,
-            mod_at: this.mod_at,
+            mod_at: this.mod_at
         };
     }
-
+    
     activateListeners(html) {
         super.activateListeners(html);
-        html.find('.angreifen').click((ev) => this._angreifenKlick(html));
-        html.find('.verteidigen').click((ev) => this._verteidigenKlick(html));
-        html.find('.schaden').click((ev) => this._schadenKlick(html));
+        html.find(".angreifen").click(ev => this._angreifenKlick(html));
+        html.find(".verteidigen").click(ev => this._verteidigenKlick(html));
+        html.find(".schaden").click(ev => this._schadenKlick(html));
     }
 
     async _angreifenKlick(html) {
-        // NOTE: var names not very descriptive:
+        // NOTE: var names not very descriptive: 
         // at_abzuege_mod kommen vom status/gesundheit, at_mod aus ansagen, nahkampfmod?
         await this.manoeverAuswaehlen(html);
-        this.updateManoeverMods(this.actor, this.item); // durch manoever
+        this.updateManoeverMods(this.actor, this.item);  // durch manoever
         this.updateStatusMods();
         this.eigenschaftenText();
 
         let label = `Attacke (${this.item.name})`;
-        let formula = `1d20 ${signed(this.item.system.at)} \
+        let formula = 
+            `1d20 ${signed(this.item.system.at)} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} \
             ${signed(this.mod_at)}`;
@@ -66,29 +70,19 @@ export class AngriffDialog extends Dialog {
 
     async _verteidigenKlick(html) {
         await this.manoeverAuswaehlen(html);
-        this.updateManoeverMods(this.actor, this.item); // durch manoever
+        this.updateManoeverMods(this.actor, this.item);  // durch manoever
         console.log(this.mod_vt);
         this.updateStatusMods();
         let label = `Verteidigung (${this.item.name})`;
-        let formula = `1d20 + ${this.item.system.vt} ${signed(this.vt_abzuege_mod)} ${signed(
-            this.item.actor.system.modifikatoren.nahkampfmod,
-        )} ${signed(this.mod_vt)}`;
+        let formula = `1d20 + ${this.item.system.vt} ${signed(this.vt_abzuege_mod)} ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} ${signed(this.mod_vt)}`;
         // console.log(formula);
         // console.log(this.vt_abzuege_mod);
-        await roll_crit_message(
-            formula,
-            label,
-            this.text_vt,
-            this.speaker,
-            this.rollmode,
-            true,
-            this.fumble_val,
-        );
+        await roll_crit_message(formula, label, this.text_vt, this.speaker, this.rollmode, true, this.fumble_val);
         // TODO: wird unberechenbar auch auf VT gezählt?
         // this.close();
     }
 
-    async _schadenKlick(html) {
+    async _schadenKlick(html){
         await this.manoeverAuswaehlen(html);
         this.updateManoeverMods(html);
         // Rollmode
@@ -96,7 +90,7 @@ export class AngriffDialog extends Dialog {
         let formula = `${this.schaden} ${signed(this.mod_dm)}`;
         console.log(formula);
         if (this.nodmg) {
-            formula = '0';
+            formula = "0";
         }
         await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false);
         // this.close()
@@ -107,30 +101,30 @@ export class AngriffDialog extends Dialog {
         if (!this.item.system.eigenschaften.length > 0) {
             return;
         }
-        this.text_at += '\nEigenschaften: ';
-        this.text_at += this.item.system.eigenschaften.map((e) => e.name).join(', ');
+        this.text_at += "\nEigenschaften: ";
+        this.text_at += this.item.system.eigenschaften.map(e => e.name).join(", ");
     }
 
     aufbauendeManoeverAktivieren() {
-        console.log(this.actor);
+        console.log(this.actor)
         let manoever = this.item.system.manoever;
-        let eigenschaften = Object.values(this.item.system.eigenschaften).map((e) => e.name);
-        let vorteile = this.actor.vorteile.map((v) => v.name);
+        let eigenschaften = Object.values(this.item.system.eigenschaften).map(e => e.name);
+        let vorteile = this.actor.vorteile.map(v => v.name);
 
-        manoever.km_rust.possible = eigenschaften.includes('Rüstungsbrechend');
-        manoever.km_stsl.possible = eigenschaften.includes('Stumpf');
+        manoever.km_rust.possible = eigenschaften.includes("Rüstungsbrechend");
+        manoever.km_stsl.possible = eigenschaften.includes("Stumpf");
         manoever.km_umkl.possible = true;
-        manoever.km_ausf.possible = vorteile.includes('Ausfall');
+        manoever.km_ausf.possible = vorteile.includes("Ausfall");
         manoever.km_hmsl.possible = vorteile.includes('Hammerschlag');
         manoever.km_kltz.possible = vorteile.includes('Klingentanz');
         manoever.km_ndwf.possible = vorteile.includes('Niederwerfen');
         manoever.km_stag.possible = vorteile.includes('Sturmangriff');
         manoever.km_tdst.possible = vorteile.includes('Todesstoß');
-        manoever.vlof.offensiver_kampfstil = vorteile.includes('Offensiver Kampfstil');
+        manoever.vlof.offensiver_kampfstil =vorteile.includes('Offensiver Kampfstil');
         manoever.kwut = vorteile.includes('Kalte Wut');
     }
 
-    manoeverAuswaehlen(html) {
+    manoeverAuswaehlen(html)  {
         /* parsed den angriff dialog und schreibt entsprechende werte 
         in die waffen items. Ersetzt ehemalige angriffUpdate aus angriff_prepare.js
         TODO: kann ggf. mit manoeverAnwenden zusammengelegt werden?
@@ -143,24 +137,24 @@ export class AngriffDialog extends Dialog {
         TODO: alle simplen booleans könnten einfach in eine loop statt einzeln aufgeschrieben werden
         */
         let manoever = this.item.system.manoever;
-
+        
         // manoeverIds = ['kbak', 'vlof', 'vldf', 'pssl']
 
         // allgemeine optionen
-        manoever.kbak.selected = html.find('#kbak')[0]?.checked || false; // Kombinierte Aktion
-        manoever.vlof.selected = html.find('#vlof')[0]?.checked || false; // Volle Offensive
-        manoever.vldf.selected = html.find('#vldf')[0]?.checked || false; // Volle Defensive
-        manoever.pssl.selected = html.find('#pssl')[0]?.checked || false; // Passierschlag pssl
-        manoever.rwdf.selected = html.find('#rwdf')[0]?.value || false; // Reichweitenunterschied
-
+        manoever.kbak.selected = html.find('#kbak')[0]?.checked || false;  // Kombinierte Aktion
+        manoever.vlof.selected = html.find('#vlof')[0]?.checked || false;  // Volle Offensive
+        manoever.vldf.selected = html.find('#vldf')[0]?.checked || false;  // Volle Defensive
+        manoever.pssl.selected = html.find('#pssl')[0]?.checked || false;  // Passierschlag pssl
+        manoever.rwdf.selected = html.find('#rwdf')[0]?.value || false;  // Reichweitenunterschied
+        
         // kampf manoever
-        manoever.km_ausw.selected = html.find('#km_ausw')[0]?.checked || false; // Ausweichen km_ausw
-        manoever.km_rust.selected = html.find('#km_rust')[0]?.checked || false; // Rüstungsbrecher km_rust
-        manoever.km_shsp.selected = html.find('#km_shsp')[0]?.checked || false; // Schildspalter km_shsp
-        manoever.km_stsl.selected = html.find('#km_stsl')[0]?.checked || false; // Stumpfer Schlag km_stsl
-        manoever.km_ever.selected = html.find('#km_ever')[0]?.checked || false; // Entfernung verändern km_ever
-        manoever.km_umre.selected = html.find('#km_umre')[0]?.checked || false; // Umreißen km_umre
-        manoever.km_ausf.selected = html.find('#km_ausf')[0]?.checked || false; // Ausfall km_ausf
+        manoever.km_ausw.selected = html.find('#km_ausw')[0]?.checked || false;  // Ausweichen km_ausw
+        manoever.km_rust.selected = html.find('#km_rust')[0]?.checked || false;  // Rüstungsbrecher km_rust
+        manoever.km_shsp.selected = html.find('#km_shsp')[0]?.checked || false;  // Schildspalter km_shsp
+        manoever.km_stsl.selected = html.find('#km_stsl')[0]?.checked || false;  // Stumpfer Schlag km_stsl
+        manoever.km_ever.selected = html.find('#km_ever')[0]?.checked || false;  // Entfernung verändern km_ever
+        manoever.km_umre.selected = html.find('#km_umre')[0]?.checked || false;  // Umreißen km_umre
+        manoever.km_ausf.selected = html.find('#km_ausf')[0]?.checked || false;  // Ausfall km_ausf
         manoever.km_befr.selected = html.find('#km_befr')[0]?.checked || false;
         manoever.km_dppl.selected = html.find('#km_dppl')[0]?.checked || false;
         manoever.km_hmsl.selected = html.find('#km_hmsl')[0]?.checked || false;
@@ -172,27 +166,26 @@ export class AngriffDialog extends Dialog {
         manoever.km_tdst.selected = html.find('#km_tdst')[0]?.checked || false;
         manoever.km_uebr.selected = html.find('#km_uebr')[0]?.checked || false;
         manoever.km_utlf.selected = html.find('#km_utlf')[0]?.checked || false;
-        manoever.km_entw.selected = html.find('#km_entw')[0]?.checked || false; // Entwaffen km_entw
+        manoever.km_entw.selected = html.find('#km_entw')[0]?.checked || false;  // Entwaffen km_entw
         manoever.km_umkl.selected = html.find('#km_umkl')[0]?.checked || false; // Umklammern km_umkl
 
-        manoever.rkaz.selected = html.find('#rkaz')[0]?.value || false; // Reaktionsanzahl
-        manoever.km_bind.selected = html.find('#km_bind')[0]?.value || false; // Binden km_bind
+        manoever.rkaz.selected = html.find('#rkaz')[0]?.value || false;  // Reaktionsanzahl
+        manoever.km_bind.selected = html.find('#km_bind')[0]?.value || false;  // Binden km_bind
         manoever.km_gzsl.selected = html.find('#km_gzsl')[0]?.value || false; // Gezielter Schlag km_gzsl
-        manoever.km_wusl.selected = html.find('#km_wusl')[0]?.value || false; // Wuchtschlag km_wusl
+        manoever.km_wusl.selected = html.find('#km_wusl')[0]?.value || false;  // Wuchtschlag km_wusl
         manoever.km_umkl.mod = html.find('#km_umkl_mod')[0]?.value || false;
         manoever.km_uebr.gs = html.find('#km_uebr_gs')[0]?.value || false;
         manoever.km_stag.gs = html.find('#km_stag_gs')[0]?.value || false;
         manoever.km_aufl.gs = html.find('#km_aufl_gs')[0]?.value || false; // Auflaufen lassen km_aufl
 
-        if (manoever.km_aufl.gs > 0) {
-            // && possible?
+        if (manoever.km_aufl.gs > 0) { // && possible?
             manoever.km_aufl.selected = true;
         }
-        manoever.mod.selected = html.find('#modifikator')[0]?.value || false; // Modifikator
-        manoever.rllm.selected = html.find('#rollMode')[0]?.value || false; // RollMode
+        manoever.mod.selected = html.find('#modifikator')[0]?.value || false;  // Modifikator
+        manoever.rllm.selected = html.find('#rollMode')[0]?.value || false;  // RollMode
         this.rollmode = this.item.system.manoever.rllm.selected;
     }
-
+    
     updateManoeverMods() {
         /* geht ausgewählte manöver durch und schreibt summe in 
         this.mod_at und this.text_at
@@ -216,7 +209,7 @@ export class AngriffDialog extends Dialog {
         let nodmg = false;
         // TDOO: this differ between angriff and nk/fk waffen, define get_tp() in both?
         // let schaden = item.data.data.schaden;
-        let schaden = item.system.tp.replace('W', 'd');
+        let schaden = item.system.tp.replace("W", "d");
 
         if (manoever.kbak.selected) {
             mod_at -= 4;
@@ -229,7 +222,7 @@ export class AngriffDialog extends Dialog {
                 text_at = text_at.concat('Volle Offensive (Offensiver Kampfstil): -4\n');
             } else {
                 mod_vt -= 8;
-                text_vt = text_vt.concat('Volle Offensive: -8\n');
+                text_vt = text_vt.concat('Volle Offensive: -8\n'); 
             }
             mod_at += 4;
             text_at = text_at.concat('Volle Offensive: +4\n');
@@ -261,8 +254,8 @@ export class AngriffDialog extends Dialog {
         }
         // Ausweichen km_ausw
         if (manoever.km_ausw.selected) {
-            mod_vt -= 2 + be;
-            text_vt = text_vt.concat(`Ausweichen: -${2 + be}\n`);
+            mod_vt -= 2+be;
+            text_vt = text_vt.concat(`Ausweichen: -${2+be}\n`);
         }
         // Auflaufen lassen km_aufl
         if (manoever.km_aufl.selected) {
@@ -270,7 +263,7 @@ export class AngriffDialog extends Dialog {
             mod_vt -= 4;
             text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_aufl']} (${gs}): -4\n`);
             mod_dm += gs;
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_aufl']}: ${gs}\n`);
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_aufl']}: ${gs}\n`)
         }
         // Binden km_bind
         let binden = Number(manoever.km_bind.selected);
@@ -282,7 +275,7 @@ export class AngriffDialog extends Dialog {
         }
         // Entfernung verändern km_ever
         if (manoever.km_ever.selected) {
-            let be = systemData.abgeleitete.be || 0;
+            let be = systemData.abgeleitete.be || 0
             mod_at -= be;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ever']}: -${be}\n`);
         }
@@ -299,7 +292,7 @@ export class AngriffDialog extends Dialog {
             mod_at -= 2;
             let txt = `${CONFIG.ILARIS.label['km_gzsl']} (${CONFIG.ILARIS.trefferzonen[trefferzone]}): -2\n`;
             text_at = text_at.concat(txt);
-            text_dm = text_dm.concat(txt);
+            text_dm = text_dm.concat(txt)
         } else {
             let zonenroll = new Roll('1d6');
             zonenroll.evaluate();
@@ -344,9 +337,7 @@ export class AngriffDialog extends Dialog {
         }
         // Stumpfer Schlag km_stsl
         if (manoever.km_stsl.selected) {
-            text_at = text_at.concat(
-                `${CONFIG.ILARIS.label['km_stsl']}: Erschöpfung statt Wunde\n`,
-            );
+            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stsl']}: Erschöpfung statt Wunde\n`);
             text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_stsl']}\n`);
         }
         // Umklammern km_umkl
@@ -386,7 +377,7 @@ export class AngriffDialog extends Dialog {
         if (manoever.km_ndwf.selected) {
             mod_at -= 4;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`);
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`)
             nodmg = true; // TODO: error message if already true?
         }
         // Sturmangriff km_stag
@@ -420,7 +411,7 @@ export class AngriffDialog extends Dialog {
             text_vt = text_vt.concat(`Modifikator: ${modifikator}\n`);
             text_at = text_at.concat(`Modifikator: ${modifikator}\n`);
         }
-
+        
         // Riposte km_rpst
         // NOTE: deactivated for kreaturen for now.
         // TDOO calculate after manoever anwenden to get mods from self.
@@ -447,7 +438,7 @@ export class AngriffDialog extends Dialog {
     updateStatusMods() {
         /* aus gesundheit und furcht wird at- und vt_abzuege_mod
         berechnet.
-        */
+        */ 
         this.at_abzuege_mod = 0;
         this.vt_abzuege_mod = 0;
 

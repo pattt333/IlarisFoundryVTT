@@ -27,17 +27,24 @@
         item.system.manoever.km_entw.selected}}
     />
 </div>
-{{/if}} {{#if item.system.manoever.km_umre.possible}}
+{{/if}}
+
+{{#if item.system.manoever.km_umre.possible}}
 <div class="flexrow">
     <label>{{get_label "km_umre"}}</label>
     <input type="checkbox" id="km_umre" {{checked item.system.manoever.km_umre.selected}} />
 </div>
-{{/if}} {{#if item.system.manoever.km_ever.possible}}
+{{/if}} 
+
+
+{{#if item.system.manoever.km_ever.possible}}
 <div class="flexrow">
     <label>{{get_label "km_ever"}}</label>
     <input type="checkbox" id="km_ever" {{checked item.system.manoever.km_ever.selected}} />
 </div>
-{{/if}} {{#if item.system.manoever.km_rust.possible}}
+{{/if}}
+
+{{#if item.system.manoever.km_rust.possible}}
 <div class="flexrow">
     <label>{{get_label "km_rust"}}</label>
     <input type="checkbox" id="km_rust" {{checked item.system.manoever.km_rust.selected}} />
@@ -52,7 +59,9 @@
     <label>{{get_label "km_stsl"}}</label>
     <input type="checkbox" id="km_stsl" {{checked item.system.manoever.km_stsl.selected}} />
 </div>
-{{/if}} {{#if item.system.manoever.km_ausf.possible}}
+{{/if}} 
+
+{{#if item.system.manoever.km_ausf.possible}}
 <div class="flexrow">
     <label>{{get_label "km_ausf"}}</label>
     <input type="checkbox" id="km_ausf" {{checked item.system.manoever.km_ausf.selected}} />
@@ -92,7 +101,9 @@
     <label>{{get_label "km_shwl"}}</label>
     <input type="checkbox" id="km_shwl" {{checked item.system.manoever.km_shwl.selected}} />
 </div>
-{{/if}}
+{{/if}} 
+
+
 
 <hr />
 <!-- eingaben -->
@@ -106,6 +117,7 @@
         {{/select}}
     </select>
 </div>
+
 
 {{#if item.system.manoever.km_gzsl.possible}}
 <div class="flexrow">
@@ -129,8 +141,7 @@
 {{/if}} {{#if item.system.manoever.km_stag.possible}}
 <div class="flexrow">
     <label>{{get_label "km_stag"}}</label>
-    <div class="flexrow">
-        <!-- todo remove checkbox and check for > 0 instead-->
+    <div class="flexrow">  <!-- todo remove checkbox and check for > 0 instead-->
         <input type="checkbox" id="km_stag" {{checked item.system.manoever.km_stag.selected}} />
         <label>GS:</label>
         <input
@@ -167,7 +178,9 @@
     <label>{{get_label "km_utlf"}}</label>
     <input type="checkbox" id="km_utlf" {{checked item.system.manoever.km_utlf.selected}} />
 </div>
-{{/if}} {{#if item.system.manoever.km_umkl.possible}}
+{{/if}}
+
+{{#if item.system.manoever.km_umkl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_umkl"}}</label>
     <div class="flexrow">
@@ -182,9 +195,10 @@
         />
     </div>
 </div>
-{{/if}}
+{{/if}} 
 
-<hr />
+
+<hr/>
 <!-- VT -->
 
 {{#if item.system.manoever.km_ausw.possible}}
@@ -192,7 +206,10 @@
     <label>{{get_label "km_ausw"}}</label>
     <input type="checkbox" id="km_ausw" {{checked item.system.manoever.km_ausw.selected}} />
 </div>
-{{/if}} {{#if item.system.manoever.km_bind.possible}}
+{{/if}} 
+
+
+{{#if item.system.manoever.km_bind.possible}}
 <div class="flexrow">
     <label>{{get_label "km_bind"}}</label>
     <input
@@ -203,18 +220,21 @@
         data-dtype="Number"
     />
 </div>
-{{/if}} {{#if item.system.manoever.km_aufl.possible}}
+{{/if}}
+
+{{#if item.system.manoever.km_aufl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_aufl"}} (GS)</label>
-    <input
-        id="km_aufl_gs"
-        type="number"
-        name="item.system.manoever.km_aufl.gs"
-        value="{{item.system.manoever.km_aufl.gs}}"
-        data-dtype="Number"
-    />
+        <input
+            id="km_aufl_gs"
+            type="number"
+            name="item.system.manoever.km_aufl.gs"
+            value="{{item.system.manoever.km_aufl.gs}}"
+            data-dtype="Number"
+        />
 </div>
-{{/if}}
+{{/if}} 
+
 
 <div class="flexrow">
     <label>Reaktionsanzahl: </label>

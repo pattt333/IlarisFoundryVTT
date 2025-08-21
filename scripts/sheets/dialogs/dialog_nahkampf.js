@@ -66,7 +66,7 @@ export class NahkampfDialog extends Dialog {
         const itemId = event.currentTarget.dataset.itemid;
         const item = this.actor.items.get(itemId);
         const toggletype = event.currentTarget.dataset.toggletype;
-        console.log(attr);
+        console.log(attr)
         let attr = `system.${toggletype}`;
         if (toggletype == 'hauptwaffe' || toggletype == 'nebenwaffe') {
             let item_status = getProperty(item, attr);

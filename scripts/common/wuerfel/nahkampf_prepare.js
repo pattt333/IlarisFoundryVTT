@@ -21,7 +21,7 @@
 
 export function nahkampfUpdate(html, actor, item) {
     /* schreibt alle inputs aus dem nahkampf_angriff template in ein objekt
-     */
+    */
     // async function nahkampfUpdate(html, actor, item) {
     // let itemId = item.id;
     // item = actor.items.get(itemId);

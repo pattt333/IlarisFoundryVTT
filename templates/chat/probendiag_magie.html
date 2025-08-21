@@ -59,7 +59,7 @@
     />
 </div>
 {{/if}}
-<hr />
+<hr/>
 <!-- Vorbereitung verkürzen -->
 {{#if manoever.mm_vbvk.possible}}
 <div class="flexrow">
@@ -85,14 +85,15 @@
         data-dtype="Number"
     />
 </div>
-<hr />
+<hr/>
 <!-- Zeit lassen -->
 {{#if manoever.mm_ztls.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_ztls"}}</label>
     <input type="checkbox" id="mm_ztls" {{checked item.system.manoever.mm_ztls.selected}} />
 </div>
-{{/if}} {{/if}}
+{{/if}}
+{{/if}}
 <!-- Erzwingen -->
 {{#if manoever.mm_erzw.possible}}
 <div class="flexrow">
@@ -119,7 +120,8 @@
 <div class="flexrow">
     <label>{{get_label "mm_zere"}}</label>
     <select id="mm_zere">
-        {{selectOptions zere_choice selected=item.system.manoever.mm_zere.selected localize=true}}
+        {{selectOptions zere_choice selected=item.system.manoever.mm_zere.selected
+        localize=true}}
     </select>
 </div>
 {{/if}}

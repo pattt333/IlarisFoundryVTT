@@ -91,16 +91,16 @@ function registerHandlebarsHelpers() {
     });
 
     Handlebars.registerHelper('waffe_ist_fernkampf', function (waffe) {
-        return waffe.typ == 'Fern';
+        return (waffe.typ == "Fern");
     });
 
     Handlebars.registerHelper('ist_nicht_leer', function (object) {
-        return Object.keys(object).length > 0;
+        return (Object.keys(object).length > 0);
     });
 
     Handlebars.registerHelper('translate_formula', function (formula) {
         if (formula) {
-            return formula.replace('W', 'd');
+            return formula.replace("W", "d");
         }
         return null;
     });
@@ -129,34 +129,32 @@ function registerHandlebarsHelpers() {
         return list.indexOf(word) > -1;
     });
 
-    Handlebars.registerHelper('ifEq', function (arg1, arg2) {
-        return arg1 == arg2;
+    Handlebars.registerHelper('ifEq', function(arg1, arg2) {
+        return (arg1 == arg2);
     });
-    Handlebars.registerHelper('sum', function (arg1, arg2) {
+    Handlebars.registerHelper('sum', function(arg1, arg2) {
         return arg1 + arg2;
     });
 
-    Handlebars.registerHelper('isCaster', function (actor) {
-        console.log('caster?');
-        return (
-            actor.system.energien.asp.max +
-                actor.system.energien.gup.max +
-                actor.system.energien.kap.max >
-            0
-        );
+    Handlebars.registerHelper('isCaster', function(actor) {
+        console.log("caster?");
+        return (actor.system.energien.asp.max + 
+            actor.system.energien.gup.max + 
+            actor.system.energien.kap.max > 0);
     });
 
-    Handlebars.registerHelper('modColor', function (arg1) {
+
+    Handlebars.registerHelper('modColor', function(arg1) {
         if (arg1 > 0) {
-            return 'darkgreen';
+            return "darkgreen";
         } else if (arg1 < 0) {
-            return 'darkred';
+            return "darkred";
         } else {
-            return 'black';
+            return "black";
         }
     });
 
-    Handlebars.registerHelper('nonzero', function (arg1) {
+    Handlebars.registerHelper('nonzero', function(arg1) {
         if (arg1 != 0) {
             return true;
         } else {

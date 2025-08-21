@@ -37,6 +37,7 @@ export class IlarisActor extends Actor {
         return false;
     }
 
+
     _calculatePWAttribute(systemData) {
         for (let attribut of Object.values(systemData.attribute)) {
             attribut.pw = 2 * attribut.wert;
@@ -156,9 +157,7 @@ export class IlarisActor extends Actor {
 
     _calculateWounds(systemData) {
         console.log('Berechne Wunden');
-        let einschraenkungen = Math.floor(
-            systemData.gesundheit.wunden + systemData.gesundheit.erschoepfung,
-        );
+        let einschraenkungen = Math.floor(systemData.gesundheit.wunden + systemData.gesundheit.erschoepfung);
         let gesundheitzusatz = ``;
         // let old_hp = data.data.gesundheit.hp.value;
         let new_hp = systemData.gesundheit.hp.max - einschraenkungen;
@@ -275,18 +274,20 @@ export class IlarisActor extends Actor {
         systemData.abgeleitete.globalermod = globalermod;
         // displayed text for nahkampfmod
         systemData.abgeleitete.nahkampfmoddisplay = ``;
-        if (systemData.modifikatoren.nahkampfmod == 0) {
+        if (systemData.modifikatoren.nahkampfmod == 0){
             systemData.abgeleitete.nahkampfmoddisplay += `-`;
-        } else if (systemData.modifikatoren.nahkampfmod > 0) {
+        }
+        else if (systemData.modifikatoren.nahkampfmod > 0) {
             systemData.abgeleitete.nahkampfmoddisplay += `+`;
         }
         // let nahkampfmodgesamt = data.data.modifikatoren.nahkampfmod + data.data.modifikatoren.globalermod;
         systemData.abgeleitete.nahkampfmoddisplay += `${systemData.modifikatoren.nahkampfmod} auf AT/VT durch Status am Token`;
         // displayed text for globalermod (auf alle Proben insgesamt)
         systemData.abgeleitete.globalermoddisplay = ``;
-        if (systemData.abgeleitete.globalermod == 0) {
+        if (systemData.abgeleitete.globalermod == 0){
             systemData.abgeleitete.globalermoddisplay += `-`;
-        } else if (systemData.abgeleitete.globalermod > 0) {
+        }
+        else if (systemData.abgeleitete.globalermod > 0) {
             systemData.abgeleitete.globalermoddisplay += `+`;
         }
         systemData.abgeleitete.globalermoddisplay += `${systemData.abgeleitete.globalermod} auf alle Proben (insgesamt)`;
@@ -369,7 +370,8 @@ export class IlarisActor extends Actor {
                 console.log('Ich überschreibe Manöver');
             }
             nwaffe.system.manoever =
-                nwaffe.system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_nahkampf);
+                nwaffe.system.manoever ||
+                foundry.utils.deepClone(CONFIG.ILARIS.manoever_nahkampf);
             // TODO: ich finde die waffeneigenschaften nicht besonders elegant umgesetzt,
             // könnte man dafür ggf. items anlegen und die iwie mit den waffen items verknüpfen?
             let kopflastig = nwaffe.system.eigenschaften.kopflastig;
@@ -487,7 +489,8 @@ export class IlarisActor extends Actor {
             //     nwaffe.data.data.manoever.km_rust.possible = true;
             // }
             // nwaffe.data.data.manoever.km_rust.possible = nwaffe.data.data.eigenschaften.ruestungsbrechend == "true";
-            nwaffe.system.manoever.km_rust.possible = nwaffe.system.eigenschaften.ruestungsbrechend;
+            nwaffe.system.manoever.km_rust.possible =
+                nwaffe.system.eigenschaften.ruestungsbrechend;
             // if (nwaffe.data.data.eigenschaften.stumpf) {
             //     manoever_at.push("km_stsl");
             //     // manoever_at.km_stsl.possible = true;
@@ -571,12 +574,15 @@ export class IlarisActor extends Actor {
             nwaffe.system.manoever.vlof.offensiver_kampfstil = actor.vorteil.kampf.some(
                 (x) => x.name == 'Offensiver Kampfstil',
             );
-            nwaffe.system.manoever.kwut = actor.vorteil.kampf.some((x) => x.name == 'Kalte Wut');
+            nwaffe.system.manoever.kwut = actor.vorteil.kampf.some(
+                (x) => x.name == 'Kalte Wut',
+            );
         }
 
         for (let fwaffe of actor.fernkampfwaffen) {
             fwaffe.system.manoever =
-                fwaffe.system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_fernkampf);
+                fwaffe.system.manoever ||
+                foundry.utils.deepClone(CONFIG.ILARIS.manoever_fernkampf);
             let kein_reiter = fwaffe.system.eigenschaften.kein_reiter;
             let reittier =
                 HAUPTWAFFE?.system.eigenschaften?.reittier ||
@@ -601,7 +607,8 @@ export class IlarisActor extends Actor {
             let talent = fwaffe.system.talent;
             fk += Number(fwaffe.system.wm_fk);
             let pw = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pw;
-            let pwt = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pwt;
+            let pwt = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system
+                .pwt;
             let taltrue = actor.profan.fertigkeiten
                 .find((x) => x.name == fertigkeit)
                 ?.system.talente.find((x) => x.name == talent);
@@ -681,7 +688,9 @@ export class IlarisActor extends Actor {
             let lcht_angepasst = hardcoded.getAngepasst('Dunkelheit', actor);
             // console.log(`licht angepasst: ${lcht_angepasst}`);
             fwaffe.system.manoever.lcht.angepasst = lcht_angepasst;
-            fwaffe.system.manoever.kwut = actor.vorteil.kampf.some((x) => x.name == 'Kalte Wut');
+            fwaffe.system.manoever.kwut = actor.vorteil.kampf.some(
+                (x) => x.name == 'Kalte Wut',
+            );
         }
 
         // "ohne": "Kein Kampfstil",
@@ -1145,10 +1154,10 @@ export class IlarisActor extends Actor {
         let vorteil_karma = [];
         let vorteil_geweihtetraditionen = [];
         let eigenheiten = [];
-        let eigenschaften = []; // kreatur only
-        let angriffe = []; // kreatur only
-        let infos = []; // kreatur only
-        let vorteile = []; // TODO: gleich machen fuer helden und kreaturen
+        let eigenschaften = [];  // kreatur only
+        let angriffe = [];  // kreatur only
+        let infos = [];  // kreatur only
+        let vorteile = [];  // TODO: gleich machen fuer helden und kreaturen
         let freietalente = [];
         let freie_uebernatuerliche_fertigkeiten = [];
         let unsorted = [];
@@ -1213,12 +1222,14 @@ export class IlarisActor extends Actor {
                 uebernatuerliche_fertigkeiten.push(item);
             } else if (item.type == 'zauber') {
                 magie_talente.push(item);
-            } else if (item.type == 'liturgie') {
+            }
+            else if (item.type == 'liturgie') {
                 karma_talente.push(item);
-            } else if (item.type == 'anrufung') {
+            }
+            else if (item.type == 'anrufung') {
                 anrufung_talente.push(item);
             } else if (item.type == 'vorteil') {
-                if (actor.type == 'kreatur') vorteile.push(item);
+                if (actor.type == "kreatur") vorteile.push(item);
                 if (item.system.gruppe == 0) vorteil_allgemein.push(item);
                 else if (item.system.gruppe == 1) vorteil_profan.push(item);
                 else if (item.system.gruppe == 2) vorteil_kampf.push(item);
@@ -1230,15 +1241,12 @@ export class IlarisActor extends Actor {
                 // else vorteil_allgemein.push(i);
             } else if (item.type == 'eigenheit') {
                 eigenheiten.push(item);
-            } else if (item.type == 'eigenschaft') {
-                // kreatur only
+            } else if (item.type == 'eigenschaft') { // kreatur only
                 console.log(item);
                 eigenschaften.push(item);
-            } else if (item.type == 'angriff') {
-                // kreatur only
+            } else if (item.type == 'angriff') { // kreatur only
                 angriffe.push(item);
-            } else if (item.type == 'info') {
-                // kreatur only
+            } else if (item.type == 'info') { // kreatur only
                 infos.push(item);
             } else if (item.type == 'freiestalent') {
                 if (item.system.profan == true) {
@@ -1259,29 +1267,53 @@ export class IlarisActor extends Actor {
             a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
         );
         uebernatuerliche_fertigkeiten.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
+            a.system.gruppe > b.system.gruppe
+                ? 1
+                : b.system.gruppe > a.system.gruppe
+                ? -1
+                : 0,
         );
         // magie_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         // magie_fertigkeiten.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
         magie_talente.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         magie_talente.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
+            a.system.gruppe > b.system.gruppe
+                ? 1
+                : b.system.gruppe > a.system.gruppe
+                ? -1
+                : 0,
         );
         karma_talente.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         karma_talente.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
+            a.system.gruppe > b.system.gruppe
+                ? 1
+                : b.system.gruppe > a.system.gruppe
+                ? -1
+                : 0,
         );
         anrufung_talente.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         anrufung_talente.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
+            a.system.gruppe > b.system.gruppe
+                ? 1
+                : b.system.gruppe > a.system.gruppe
+                ? -1
+                : 0,
         );
         profan_fertigkeiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         profan_fertigkeiten.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
+            a.system.gruppe > b.system.gruppe
+                ? 1
+                : b.system.gruppe > a.system.gruppe
+                ? -1
+                : 0,
         );
         freie_fertigkeiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         freie_fertigkeiten.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
+            a.system.gruppe > b.system.gruppe
+                ? 1
+                : b.system.gruppe > a.system.gruppe
+                ? -1
+                : 0,
         );
         vorteil_allgemein.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         vorteil_profan.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
@@ -1296,7 +1328,11 @@ export class IlarisActor extends Actor {
         vorteile.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         eigenheiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         freie_uebernatuerliche_fertigkeiten.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
+        a.system.gruppe > b.system.gruppe
+            ? 1
+            : b.system.gruppe > a.system.gruppe
+            ? -1
+            : 0,
         );
 
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'name' );
@@ -1354,7 +1390,7 @@ export class IlarisActor extends Actor {
         // vorteil singular? inkonsistent zu den anderen listen
         // fuer kreaturen waere es wesentlich einfacher alles in einer liste zu sammeln
         // und die kategorie als property zu behalten (kann ja auch nach gefiltert werden)
-        // in data.vorteile leg ich erstmal alle ab als zwischenloesung ;)
+        // in data.vorteile leg ich erstmal alle ab als zwischenloesung ;) 
         actor.vorteil.allgemein = vorteil_allgemein;
         actor.vorteil.profan = vorteil_profan;
         actor.vorteil.kampf = vorteil_kampf;
@@ -1366,12 +1402,12 @@ export class IlarisActor extends Actor {
         actor.eigenheiten = eigenheiten;
         actor.unsorted = unsorted;
         actor.misc = actor.misc || {};
-        actor.misc.kampfstile_list = vorteil_kampfstil.map((kampfstil) => kampfstil.name);
+        actor.misc.kampfstile_list = vorteil_kampfstil.map(kampfstil => kampfstil.name);
         actor.misc.profan_fertigkeit_list = profan_fertigkeit_list;
         actor.misc.uebernatuerlich_fertigkeit_list =
             this.__getAlleUebernatuerlichenFertigkeiten(actor);
         actor.misc.speicherplatz_list = speicherplatz_list;
-        if (actor.type == 'kreatur') {
+        if (actor.type == "kreatur") {
             actor.eigenschaften = eigenschaften;
             actor.angriffe = angriffe;
             actor.vorteile = vorteile;

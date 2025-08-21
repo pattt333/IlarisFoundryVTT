@@ -1,35 +1,35 @@
-import { IlarisActor } from './actor.js';
+import { IlarisActor } from "./actor.js";
 
 export class HeldActor extends IlarisActor {
+
     async _preCreate(data, options, user) {
         foundry.utils.mergeObject(data, {
             'token.bar1': { attribute: 'gesundheit.hp' },
             'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
             'token.displayBars': CONST.TOKEN_DISPLAY_MODES.ALWAYS,
             'token.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
-            'token.name': data.name,
+            'token.name': data.name
         });
         data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png';
         data.token.vision = true;
         data.token.actorLink = true;
         data.token.brightSight = 15;
         data.token.dimSight = 5;
-        await super._preCreate(data, options, user); // IlarisActor._preCreate() -> Actor._preCreate()
+        await super._preCreate(data, options, user);  // IlarisActor._preCreate() -> Actor._preCreate()
     }
-
+    
     /** @override */
-    prepareData() {
-        // sieht jetzt gleich aus, kann in actor.js?
+    prepareData() {  // sieht jetzt gleich aus, kann in actor.js?
         super.prepareData();
-        this._initializeActor(); // TODO: warum wird data überall durchgegeben, ist doch sowieso instanziert??
+        this._initializeActor();  // TODO: warum wird data überall durchgegeben, ist doch sowieso instanziert??
     }
 
     _initializeActor() {
-        // NOTE: sieht aus als wäre _initialize eine methode von Actor,
+        // NOTE: sieht aus als wäre _initialize eine methode von Actor, 
         // die man nicht einfach überschreiben sollte
         // daher umbenannt in initialiseActor
-        console.log('init');
-        console.log(this);
+        console.log("init")
+        console.log(this)
         this._sortItems(this); //Als erstes, darauf basieren Berechnungen
         this._calculatePWAttribute(this.system);
         this._calculateWounds(this.system); // muss vor _calculateAbgeleitete kommen (wegen globalermod)

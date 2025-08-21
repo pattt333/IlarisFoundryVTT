@@ -27,7 +27,7 @@ Hooks.once('init', () => {
     // CONFIG.debug.hooks = true;
 
     // ACTORS
-    CONFIG.Actor.documentClass = IlarisActorProxy; // TODO: Proxy
+    CONFIG.Actor.documentClass = IlarisActorProxy;  // TODO: Proxy
     Actors.unregisterSheet('core', ActorSheet);
     Actors.registerSheet('Ilaris', HeldenSheet, { types: ['held'], makeDefault: true });
     Actors.registerSheet('Ilaris', KreaturSheet, { types: ['kreatur'], makeDefault: true });
@@ -40,10 +40,7 @@ Hooks.once('init', () => {
         types: ['nahkampfwaffe'],
         makeDefault: true,
     });
-    Items.registerSheet('Ilaris', FernkampfwaffeSheet, {
-        types: ['fernkampfwaffe'],
-        makeDefault: true,
-    });
+    Items.registerSheet('Ilaris', FernkampfwaffeSheet, { types: ['fernkampfwaffe'], makeDefault: true });
     Items.registerSheet('Ilaris', GegenstandSheet, { types: ['gegenstand'], makeDefault: true });
     Items.registerSheet('Ilaris', FertigkeitSheet, { types: ['fertigkeit'], makeDefault: true });
     Items.registerSheet('Ilaris', TalentSheet, { types: ['talent'], makeDefault: true });
@@ -65,10 +62,7 @@ Hooks.once('init', () => {
     Items.registerSheet('Ilaris', EigenschaftSheet, { types: ['eigenschaft'], makeDefault: true });
     Items.registerSheet('Ilaris', AngriffSheet, { types: ['angriff'], makeDefault: true });
     Items.registerSheet('Ilaris', InfoSheet, { types: ['info'], makeDefault: true });
-    Items.registerSheet('Ilaris', FreiesTalentSheet, {
-        types: ['freiestalent'],
-        makeDefault: true,
-    });
+    Items.registerSheet('Ilaris', FreiesTalentSheet, { types: ['freiestalent'], makeDefault: true });
     // Items.registerSheet("Ilaris", VorteilSheet, {types: ["allgemein_vorteil", "profan_vorteil", "kampf_vorteil", "kampfstil", "magie_vorteil", "magie_tradition", "karma_vorteil", "karma_tradition"], makeDefault: true});
     initializeHandlebars();
     // game.sephrasto = new SephrastoImporter();
@@ -136,9 +130,7 @@ Hooks.once('init', () => {
             id: 'schlechtesicht4',
             label: 'Schlechte Sicht (Blind)',
             duration: [],
-            changes: [
-                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 8, value: -16 },
-            ],
+            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 8, value: -16 }],
             isTemporary: 0,
             icon: 'systems/Ilaris/assets/images/icon/sight-disabled-purple.svg',
         },
@@ -170,9 +162,7 @@ Hooks.once('init', () => {
             id: 'untergrund4',
             label: 'Unsicherer Untergrund (Drahtseil)',
             duration: [],
-            changes: [
-                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 8, value: -16 },
-            ],
+            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 8, value: -16 }],
             isTemporary: 0,
             icon: 'systems/Ilaris/assets/images/icon/sticky-boot-purple.svg',
         },
@@ -189,9 +179,7 @@ Hooks.once('init', () => {
             id: 'Position2',
             label: 'Vorteilhafte Position',
             duration: [],
-            changes: [
-                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 10, value: +2 },
-            ],
+            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 10, value: +2 }],
             isTemporary: 0,
             icon: 'systems/Ilaris/assets/images/icon/hill-conquest-light-green.svg',
         },
@@ -199,9 +187,7 @@ Hooks.once('init', () => {
             id: 'Position3',
             label: 'Schlechte Position (Kniend)',
             duration: [],
-            changes: [
-                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 12, value: -2 },
-            ],
+            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 12, value: -2 }],
             isTemporary: 0,
             icon: 'systems/Ilaris/assets/images/icon/kneeling-yellow.svg',
         },
@@ -209,9 +195,7 @@ Hooks.once('init', () => {
             id: 'Position4',
             label: 'Sehr schlechte Position (Liegend)',
             duration: [],
-            changes: [
-                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 13, value: -4 },
-            ],
+            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 13, value: -4 }],
             isTemporary: 0,
             icon: 'systems/Ilaris/assets/images/icon/falling-orange.svg',
         },
@@ -228,9 +212,7 @@ Hooks.once('init', () => {
             id: 'Nahkampf2',
             label: 'Nahkampf +2',
             duration: [],
-            changes: [
-                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 10, value: +2 },
-            ],
+            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 10, value: +2 }],
             isTemporary: 0,
             icon: 'systems/Ilaris/assets/images/icon/swordwoman-light-green.svg',
         },
@@ -238,9 +220,7 @@ Hooks.once('init', () => {
             id: 'Nahkampf3',
             label: 'Nahkampf -2',
             duration: [],
-            changes: [
-                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 12, value: -2 },
-            ],
+            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 12, value: -2 }],
             isTemporary: 0,
             icon: 'systems/Ilaris/assets/images/icon/swordwoman-yellow.svg',
         },
@@ -248,9 +228,7 @@ Hooks.once('init', () => {
             id: 'Nahkampf4',
             label: 'Nahkampf -4',
             duration: [],
-            changes: [
-                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 13, value: -4 },
-            ],
+            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 13, value: -4 }],
             isTemporary: 0,
             icon: 'systems/Ilaris/assets/images/icon/swordwoman-orange.svg',
         },
@@ -258,15 +236,16 @@ Hooks.once('init', () => {
 });
 
 Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
-    console.log(data);
-    console.log(actor);
-    console.log('EFFECT!!! ');
+    console.log(data)
+    console.log(actor)
+    console.log("EFFECT!!! ");
     data.changes = [];
     console.log(actor);
     console.log(options);
     return userId;
 });
 // const myHookId = Hooks.on('updateActor', this.onUpdateActor.bind(this));
+
 
 // Hooks.on('preCreateActor', (createData) => {
 //     mergeObject(createData, {
