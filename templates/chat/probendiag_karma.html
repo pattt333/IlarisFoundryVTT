@@ -59,7 +59,7 @@
     />
 </div>
 {{/if}}
-<hr/>
+<hr />
 <!-- Vorbereitung verkürzen -->
 {{#if manoever.lm_vbvk.possible}}
 <div class="flexrow">
@@ -86,7 +86,7 @@
     />
 </div>
 {{/if}}
-<hr/>
+<hr />
 <!-- Kosten sparen -->
 {{#if manoever.lm_kosp.possible}}
 <div class="flexrow">
@@ -105,8 +105,7 @@
 <div class="flexrow">
     <label>{{get_label "lm_zere"}}</label>
     <select id="lm_zere">
-        {{selectOptions zere_choice selected=item.system.manoever.lm_zere.selected
-        localize=true}}
+        {{selectOptions zere_choice selected=item.system.manoever.lm_zere.selected localize=true}}
     </select>
 </div>
 {{/if}}
