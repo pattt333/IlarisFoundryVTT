@@ -97,19 +97,158 @@
                 <label class="flex-fest-var" style="flex-basis: 100px"
                     ><b>Eigenschaften: </b></label
                 >
-                <span>
-                    {{#each item.system.eigenschaften as |val key|}}
-                    <label>{{get_label key}}</label>
-                    <input
-                        name="system.eigenschaften.{{key}}"
-                        data-dtype="Boolean"
-                        type="checkbox"
-                        {{checked
-                        .}}
-                    />
-                    <label> | &nbsp;</label>
-                    {{/each}}
-                </span>
+                <div>
+                    <span>
+                        <label>| Kopflastig: </label>
+                        <input
+                            name="system.eigenschaften.kopflastig"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.kopflastig}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Niederwerfen: </label>
+                        <input
+                            name="system.eigenschaften.niederwerfen"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.niederwerfen}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Parierwaffe: </label>
+                        <input
+                            name="system.eigenschaften.parierwaffe"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.parierwaffe}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Reittier: </label>
+                        <input
+                            name="system.eigenschaften.reittier"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.reittier}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Rüstungsbrechend: </label>
+                        <input
+                            name="system.eigenschaften.ruestungsbrechend"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.ruestungsbrechend}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Schild: </label>
+                        <input
+                            name="system.eigenschaften.schild"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.schild}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Schwer (4): </label>
+                        <input
+                            name="system.eigenschaften.schwer_4"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.schwer_4}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Schwer (8): </label>
+                        <input
+                            name="system.eigenschaften.schwer_8"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.schwer_8}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Stumpf: </label>
+                        <input
+                            name="system.eigenschaften.stumpf"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.stumpf}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Unberechenbar: </label>
+                        <input
+                            name="system.eigenschaften.unberechenbar"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.unberechenbar}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Unzerstörbar: </label>
+                        <input
+                            name="system.eigenschaften.unzerstoerbar"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.unzerstoerbar}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Wendig: </label>
+                        <input
+                            name="system.eigenschaften.wendig"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.wendig}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Zerbrechlich: </label>
+                        <input
+                            name="system.eigenschaften.zerbrechlich"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.zerbrechlich}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Zweihändig: </label>
+                        <input
+                            name="system.eigenschaften.zweihaendig"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.zweihaendig}}
+                        />
+                    </span>
+                    <span>
+                        <label>| Kein Malus als Nebenwaffe: </label>
+                        <input
+                            name="system.eigenschaften.kein_malus_nebenwaffe"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                                item.system.eigenschaften.kein_malus_nebenwaffe}}
+                        />
+                    </span>
+                </div>
             </div>
             {{#if hasOwner}}
             <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigene Mod.: </b></label>
