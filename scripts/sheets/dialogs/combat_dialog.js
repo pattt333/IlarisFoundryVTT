@@ -34,7 +34,7 @@ export class CombatDialog extends Dialog {
             text.textContent = isCollapsed ? 'Einklappen' : 'Ausklappen'
         })
 
-        // Update has-value class when inputs change
+        // Update has-value class when inputs change and handle zero damage mutual exclusion
         html.find('.maneuver-item input, .maneuver-item select').change((ev) => {
             const item = ev.currentTarget.closest('.maneuver-item')
             const hasValue = Array.from(item.querySelectorAll('input, select')).some((input) => {
@@ -42,10 +42,49 @@ export class CombatDialog extends Dialog {
                 return input.value && input.value !== '0'
             })
             item.classList.toggle('has-value', hasValue)
+
+            // Handle zero damage mutual exclusion for AngriffDialog and FernkampfAngriffDialog
+            if (
+                this.constructor.name === 'AngriffDialog' ||
+                this.constructor.name === 'FernkampfAngriffDialog'
+            ) {
+                // Find the maneuver associated with this input
+                const inputElement = ev.currentTarget
+                const elementId = inputElement.id
+
+                // Extract maneuver ID from element ID (format: manoeverIdFIELD-dialogId)
+                const dialogIdPattern = `-${this.dialogId}`
+                const fieldPattern = /(CHECKBOX|NUMBER|TREFFER_ZONE)/
+                const manoeverId = elementId.replace(dialogIdPattern, '').replace(fieldPattern, '')
+
+                const selectedManoever = this.item.manoever?.find((m) => m.id === manoeverId)
+
+                if (selectedManoever && this.hasZeroDamageModification(selectedManoever)) {
+                    let isSelected = false
+                    if (inputElement.type === 'checkbox') {
+                        isSelected = inputElement.checked
+                    } else if (inputElement.type === 'number') {
+                        isSelected = inputElement.value && inputElement.value !== '0'
+                    }
+
+                    this.handleZeroDamageMutualExclusion(html, selectedManoever, isSelected)
+                }
+            }
         })
 
         // Colorize numbers in maneuver labels
         this.colorizeManeuverNumbers(html)
+
+        // Initialize zero damage mutual exclusion for AngriffDialog and FernkampfAngriffDialog
+        if (
+            this.constructor.name === 'AngriffDialog' ||
+            this.constructor.name === 'FernkampfAngriffDialog'
+        ) {
+            // Check for initially selected zero damage maneuvers
+            setTimeout(() => {
+                this.initializeZeroDamageMutualExclusion(html)
+            }, 100)
+        }
     }
 
     colorizeManeuverNumbers(html) {
@@ -95,6 +134,127 @@ export class CombatDialog extends Dialog {
         let vorteile = this.actor.vorteil.kampf.map((v) => v.name)
 
         manoever.kwut = vorteile.includes('Kalte Wut')
+    }
+
+    /**
+     * Check if a maneuver has ZERO_DAMAGE modifications
+     * @param {Object} manoever - The maneuver object to check
+     * @returns {boolean} - True if the maneuver has ZERO_DAMAGE modifications
+     */
+    hasZeroDamageModification(manoever) {
+        if (!manoever.system || !manoever.system.modifications) {
+            return false
+        }
+
+        return Object.values(manoever.system.modifications).some(
+            (modification) => modification.type === 'ZERO_DAMAGE',
+        )
+    }
+
+    /**
+     * Get all zero damage maneuvers from the current item
+     * @returns {Array} - Array of zero damage maneuvers
+     */
+    getZeroDamageManeuvers() {
+        if (!this.item.manoever) {
+            return []
+        }
+
+        return this.item.manoever.filter((manoever) => this.hasZeroDamageModification(manoever))
+    }
+
+    /**
+     * Initialize zero damage mutual exclusion on dialog open
+     * @param {jQuery} html - The HTML element of the dialog
+     */
+    initializeZeroDamageMutualExclusion(html) {
+        const zeroDamageManeuvers = this.getZeroDamageManeuvers()
+
+        if (zeroDamageManeuvers.length <= 1) {
+            return // No need for mutual exclusion
+        }
+
+        // Check if any zero damage maneuver is already selected
+        for (const manoever of zeroDamageManeuvers) {
+            const elementId = `${manoever.id}${manoever.inputValue.field}-${this.dialogId}`
+            const element = html.find(`#${elementId}`)[0]
+
+            if (element) {
+                let isSelected = false
+                if (manoever.inputValue.field === 'CHECKBOX') {
+                    isSelected = element.checked
+                } else if (manoever.inputValue.field === 'NUMBER') {
+                    isSelected = element.value && element.value !== '0'
+                }
+
+                if (isSelected) {
+                    this.handleZeroDamageMutualExclusion(html, manoever, true)
+                    break
+                }
+            }
+        }
+    }
+
+    /**
+     * Handle mutual exclusion of zero damage maneuvers
+     * @param {jQuery} html - The HTML element of the dialog
+     * @param {Object} selectedManoever - The maneuver that was just selected
+     * @param {boolean} isSelected - Whether the maneuver is now selected
+     */
+    handleZeroDamageMutualExclusion(html, selectedManoever, isSelected) {
+        const zeroDamageManeuvers = this.getZeroDamageManeuvers()
+
+        if (zeroDamageManeuvers.length <= 1) {
+            return // No need for mutual exclusion if there's only one or no zero damage maneuvers
+        }
+
+        // Check if any zero damage maneuver is currently selected
+        let anyZeroDamageSelected = false
+        let selectedZeroDamageManoever = null
+
+        for (const manoever of zeroDamageManeuvers) {
+            const elementId = `${manoever.id}${manoever.inputValue.field}-${this.dialogId}`
+            const element = html.find(`#${elementId}`)[0]
+
+            if (element) {
+                let isCurrentlySelected = false
+                if (manoever.inputValue.field === 'CHECKBOX') {
+                    isCurrentlySelected = element.checked
+                } else if (manoever.inputValue.field === 'NUMBER') {
+                    isCurrentlySelected = element.value && element.value !== '0'
+                }
+
+                if (isCurrentlySelected) {
+                    anyZeroDamageSelected = true
+                    selectedZeroDamageManoever = manoever
+                    break
+                }
+            }
+        }
+
+        // Apply mutual exclusion
+        zeroDamageManeuvers.forEach((manoever) => {
+            const elementId = `${manoever.id}${manoever.inputValue.field}-${this.dialogId}`
+            const element = html.find(`#${elementId}`)[0]
+            const container = element?.closest('.maneuver-item')
+
+            if (element && container) {
+                if (anyZeroDamageSelected && manoever.id !== selectedZeroDamageManoever?.id) {
+                    // Disable this maneuver and add tooltip
+                    element.disabled = true
+                    container.classList.add('zero-damage-disabled')
+
+                    // Add or update tooltip
+                    const tooltipText = `Kann nicht mit "${selectedZeroDamageManoever.name}" kombiniert werden (beide verursachen keinen Schaden)`
+                    container.title = tooltipText
+                } else {
+                    // Enable this maneuver and remove tooltip
+                    element.disabled = false
+                    container.classList.remove('zero-damage-disabled')
+                    container.removeAttribute('title')
+                }
+            }
+        })
     }
 
     async manoeverAuswaehlen(html) {
