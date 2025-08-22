@@ -10,7 +10,7 @@ import { UebernatuerlichFertigkeitSheet } from './sheets/items/uebernatuerlich_f
 import { UebernatuerlichTalentSheet } from './sheets/items/uebernatuerlich_talent.js'
 import { FertigkeitSheet } from './sheets/items/fertigkeit.js'
 import { TalentSheet } from './sheets/items/talent.js'
-// import { SephrastoImporter } from "./common/sephrasto_importer.js";
+import { SephrastoImporter } from './common/sephrasto_importer.js'
 import { NahkampfwaffeSheet } from './sheets/items/nahkampfwaffe.js'
 import { FernkampfwaffeSheet } from './sheets/items/fernkampfwaffe.js'
 import { GegenstandSheet } from './sheets/items/gegenstand.js'
@@ -72,7 +72,7 @@ Hooks.once('init', () => {
     Items.registerSheet('Ilaris', FreiesTalentSheet, { types: ['freiestalent'], makeDefault: true })
     // Items.registerSheet("Ilaris", VorteilSheet, {types: ["allgemein_vorteil", "profan_vorteil", "kampf_vorteil", "kampfstil", "magie_vorteil", "magie_tradition", "karma_vorteil", "karma_tradition"], makeDefault: true});
     initializeHandlebars()
-    // game.sephrasto = new SephrastoImporter();
+    game.sephrasto = new SephrastoImporter()
     CONFIG.ILARIS = ILARIS
     CONFIG.Combat.initiative = { formula: '@initiative', decimals: 1 }
     CONFIG.statusEffects = [

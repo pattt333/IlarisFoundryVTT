@@ -33,6 +33,96 @@ export class SephrastoImporter {
         this.datenbank = data.default.datenbank
     }
 
+    /**
+     * Parse HTML content to extract structured spell data
+     * @param {string} htmlContent - The HTML content containing spell information
+     * @returns {Object} - Extracted spell data with separated fields
+     */
+    /**
+     * Parse HTML content to extract structured spell data
+     * @param {string} htmlContent - The HTML content containing spell information
+     * @returns {Object} - Extracted spell data with separated fields
+     */
+    parseSpellHtmlContent(htmlContent) {
+        if (!htmlContent || typeof htmlContent !== 'string') {
+            return { text: htmlContent || '' }
+        }
+
+        let text = htmlContent
+        let maechtig = ''
+        let schwierigkeit = ''
+        let modifikationen = ''
+        let vorbereitung = ''
+        let ziel = ''
+        let reichweite = ''
+        let wirkungsdauer = ''
+        let kosten = ''
+        let fertigkeiten = ''
+        let erlernen = ''
+
+        // Helper function to extract field value
+        const extractField = (content, label) => {
+            const pattern = new RegExp(`<h>${label}:<\\/h>\\s*([^<]*?)(?=<|$)`, 'gi')
+            const match = content.match(pattern)
+            if (match && match[0]) {
+                const value = match[0]
+                    .replace(new RegExp(`<h>${label}:<\\/h>\\s*`, 'gi'), '')
+                    .trim()
+                return { value, match: match[0] }
+            }
+            return { value: '', match: '' }
+        }
+
+        // Extract each field
+        const fields = [
+            { name: 'maechtig', labels: ['Mächtige Magie', 'Mächtige Liturgie'] },
+            { name: 'schwierigkeit', labels: ['Probenschwierigkeit'] },
+            { name: 'modifikationen', labels: ['Modifikationen'] },
+            { name: 'vorbereitung', labels: ['Vorbereitungszeit'] },
+            { name: 'ziel', labels: ['Ziel'] },
+            { name: 'reichweite', labels: ['Reichweite'] },
+            { name: 'wirkungsdauer', labels: ['Wirkungsdauer'] },
+            { name: 'kosten', labels: ['Kosten'] },
+            { name: 'fertigkeiten', labels: ['Fertigkeiten'] },
+            { name: 'erlernen', labels: ['Erlernen'] },
+        ]
+
+        for (const field of fields) {
+            for (const label of field.labels) {
+                const result = extractField(text, label)
+                if (result.value) {
+                    eval(`${field.name} = result.value`)
+                    text = text.replace(result.match, '')
+                    break
+                }
+            }
+        }
+
+        // Clean up remaining text content
+        text = text
+            .replace(/<head>.*?<\/head>/gi, '') // Remove head section
+            .replace(/<style>.*?<\/style>/gi, '') // Remove style sections
+            .replace(/<h>[^<]*<\/h>/gi, '') // Remove any remaining h tags
+            .replace(/^\s*<body[^>]*>/gi, '') // Remove opening body tag
+            .replace(/<\/body>\s*$/gi, '') // Remove closing body tag
+            .replace(/(<br>\s*){2,}/gi, '<br>') // Replace multiple br tags with single
+            .trim()
+
+        return {
+            text,
+            maechtig,
+            schwierigkeit,
+            modifikationen,
+            vorbereitung,
+            ziel,
+            reichweite,
+            wirkungsdauer,
+            kosten,
+            fertigkeiten,
+            erlernen,
+        }
+    }
+
     async _create_vorteile_old() {
         const pack_allgemein = game.packs.get('world.allgemeine-vorteile')
         const pack_profan = game.packs.get('world.profane-vorteile')
@@ -541,6 +631,143 @@ export class SephrastoImporter {
             let item = new Item(man)
             await pack.importDocument(item)
         }
+    }
+
+    /**
+     * Process and fix spells with HTML content in their descriptions
+     * This function scans existing spells and extracts structured data from HTML content
+     */
+    async processSpellsWithHtmlContent() {
+        console.log('Processing spells with HTML content...')
+
+        const spellPacks = ['world.zauberspruche-und-rituale', 'world.liturgien-und-mirakel']
+
+        let processedCount = 0
+
+        for (const packId of spellPacks) {
+            const pack = game.packs.get(packId)
+            if (!pack) {
+                console.warn(`Pack ${packId} not found`)
+                continue
+            }
+
+            const documents = await pack.getDocuments()
+            console.log(`Processing ${documents.length} documents in ${packId}`)
+
+            for (const spell of documents) {
+                if (!spell.system || !spell.system.text) {
+                    continue
+                }
+
+                const text = spell.system.text
+
+                // Check if text contains HTML that needs parsing
+                if (
+                    text.includes('<') &&
+                    (text.includes('Mächtige Magie:') ||
+                        text.includes('Mächtige Liturgie:') ||
+                        text.includes('Probenschwierigkeit:') ||
+                        text.includes('Kosten:') ||
+                        text.includes('Vorbereitungszeit:') ||
+                        text.includes('<h>') ||
+                        text.includes('<style>'))
+                ) {
+                    console.log(`Processing spell: ${spell.name}`)
+
+                    // Parse the HTML content
+                    const parsed = this.parseSpellHtmlContent(text)
+
+                    // Update the spell data
+                    const updateData = {}
+
+                    // Only update fields that are empty or contain the original HTML
+                    if (parsed.text !== text) {
+                        updateData['system.text'] = parsed.text
+                    }
+
+                    if (
+                        parsed.maechtig &&
+                        (!spell.system.maechtig || spell.system.maechtig.includes('<'))
+                    ) {
+                        updateData['system.maechtig'] = parsed.maechtig
+                    }
+
+                    if (
+                        parsed.schwierigkeit &&
+                        (!spell.system.schwierigkeit || spell.system.schwierigkeit.includes('<'))
+                    ) {
+                        updateData['system.schwierigkeit'] = parsed.schwierigkeit
+                    }
+
+                    if (
+                        parsed.modifikationen &&
+                        (!spell.system.modifikationen || spell.system.modifikationen.includes('<'))
+                    ) {
+                        updateData['system.modifikationen'] = parsed.modifikationen
+                    }
+
+                    if (
+                        parsed.vorbereitung &&
+                        (!spell.system.vorbereitung || spell.system.vorbereitung.includes('<'))
+                    ) {
+                        updateData['system.vorbereitung'] = parsed.vorbereitung
+                    }
+
+                    if (parsed.ziel && (!spell.system.ziel || spell.system.ziel.includes('<'))) {
+                        updateData['system.ziel'] = parsed.ziel
+                    }
+
+                    if (
+                        parsed.reichweite &&
+                        (!spell.system.reichweite || spell.system.reichweite.includes('<'))
+                    ) {
+                        updateData['system.reichweite'] = parsed.reichweite
+                    }
+
+                    if (
+                        parsed.wirkungsdauer &&
+                        (!spell.system.wirkungsdauer || spell.system.wirkungsdauer.includes('<'))
+                    ) {
+                        updateData['system.wirkungsdauer'] = parsed.wirkungsdauer
+                    }
+
+                    if (
+                        parsed.kosten &&
+                        (!spell.system.kosten || spell.system.kosten.includes('<'))
+                    ) {
+                        updateData['system.kosten'] = parsed.kosten
+                    }
+
+                    if (
+                        parsed.fertigkeiten &&
+                        (!spell.system.fertigkeiten || spell.system.fertigkeiten.includes('<'))
+                    ) {
+                        updateData['system.fertigkeiten'] = parsed.fertigkeiten
+                    }
+
+                    if (
+                        parsed.erlernen &&
+                        (!spell.system.erlernen || spell.system.erlernen.includes('<'))
+                    ) {
+                        updateData['system.erlernen'] = parsed.erlernen
+                    }
+
+                    if (Object.keys(updateData).length > 0) {
+                        try {
+                            await spell.update(updateData)
+                            processedCount++
+                            console.log(`Updated spell: ${spell.name}`)
+                        } catch (error) {
+                            console.error(`Error updating spell ${spell.name}:`, error)
+                        }
+                    }
+                }
+            }
+        }
+
+        console.log(`Processed ${processedCount} spells with HTML content`)
+        ui.notifications.info(`Processed ${processedCount} spells with HTML content`)
+        return processedCount
     }
 
     import() {
