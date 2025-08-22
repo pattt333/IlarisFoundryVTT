@@ -1,4 +1,4 @@
-import {AngriffDialog} from "../sheets/dialogs/angriff.js";
+import { AngriffDialog } from '../sheets/dialogs/angriff.js';
 import { nahkampfUpdate, calculate_attacke } from './wuerfel/nahkampf_prepare.js';
 import { fernkampfUpdate } from './wuerfel/fernkampf_prepare.js';
 import { magieUpdate } from './wuerfel/magie_prepare.js';
@@ -13,7 +13,7 @@ import {
 // import { calculate_diceschips, roll_crit_message } from "./wuerfel/wuerfel_misc.js";
 
 export async function wuerfelwurf(event, actor) {
-    console.log(event)
+    console.log(event);
     let speaker = ChatMessage.getSpeaker({ actor: actor });
     let systemData = actor.system;
     let rolltype = $(event.currentTarget).data('rolltype');
@@ -48,7 +48,7 @@ export async function wuerfelwurf(event, actor) {
     //     "7": "7",
     //     "8": "8"
     // };
-    if (rolltype == "angriff_diag") {
+    if (rolltype == 'angriff_diag') {
         let item = actor.items.get(event.currentTarget.dataset.itemid);
         item.setManoevers();
         let d = new AngriffDialog(actor, item);
@@ -80,7 +80,7 @@ export async function wuerfelwurf(event, actor) {
                 // distance_checked: "0",
                 distance_choice: CONFIG.ILARIS.distance_choice,
                 rollModes: CONFIG.Dice.rollModes,
-                defaultRollMode: game.settings.get("core", "rollMode"),
+                defaultRollMode: game.settings.get('core', 'rollMode'),
                 manoever: item.system.manoever,
                 item: item,
                 // pw: pw
@@ -117,7 +117,7 @@ export async function wuerfelwurf(event, actor) {
                                 text = text.concat('Volle Offensive\n');
                             }
                             // Reichweitenunterschiede rwdf
-                            let reichweite = item.system.manoever.rwdf.selected;  // contains number
+                            let reichweite = item.system.manoever.rwdf.selected; // contains number
                             mod_at -= 2 * Number(reichweite);
                             text = text.concat(`Reichweitenunterschied: ${reichweite}\n`);
                             //Passierschlag pssl & Anzahl Reaktionen rkaz
@@ -193,8 +193,7 @@ export async function wuerfelwurf(event, actor) {
                                 if (item.system.manoever.vlof.offensiver_kampfstil) {
                                     mod_vt -= 4;
                                     text = text.concat('Volle Offensive (Offensiver Kampfstil)\n');
-                                }
-                                else {
+                                } else {
                                     mod_vt -= 8;
                                     text = text.concat('Volle Offensive\n');
                                 }
@@ -412,7 +411,7 @@ export async function wuerfelwurf(event, actor) {
                 fm_srfs_choice: CONFIG.ILARIS.zeroToEightObj,
                 // fm_srfs_checked: item.data.data.manoever.fm_srfs.selected,
                 rollModes: CONFIG.Dice.rollModes,
-                defaultRollMode: game.settings.get("core", "rollMode"),
+                defaultRollMode: game.settings.get('core', 'rollMode'),
                 manoever: item.system.manoever,
                 item: item,
                 // pw: pw
@@ -747,7 +746,7 @@ export async function wuerfelwurf(event, actor) {
                 choices_schips: CONFIG.ILARIS.schips_choice,
                 checked_schips: '0',
                 rollModes: CONFIG.Dice.rollModes,
-                defaultRollMode: game.settings.get("core", "rollMode"),
+                defaultRollMode: game.settings.get('core', 'rollMode'),
             },
         );
         let d = new Dialog(
@@ -808,7 +807,7 @@ export async function wuerfelwurf(event, actor) {
         d.render(true);
     } else if (rolltype == 'profan_fertigkeit_diag') {
         let fertigkeit = $(event.currentTarget).data('fertigkeit');
-        console.log(actor)
+        console.log(actor);
         label = actor.profan.fertigkeiten[fertigkeit].name;
         const talent_list = {};
         let array_talente = actor.profan.fertigkeiten[fertigkeit].system.talente;
@@ -827,7 +826,7 @@ export async function wuerfelwurf(event, actor) {
             },
             choices_talente: talent_list,
             rollModes: CONFIG.Dice.rollModes,
-            defaultRollMode: game.settings.get("core", "rollMode"),
+            defaultRollMode: game.settings.get('core', 'rollMode'),
         });
         let d = new Dialog(
             {
@@ -911,7 +910,7 @@ export async function wuerfelwurf(event, actor) {
                 choices_schips: CONFIG.ILARIS.schips_choice,
                 checked_schips: '0',
                 rollModes: CONFIG.Dice.rollModes,
-                defaultRollMode: game.settings.get("core", "rollMode"),
+                defaultRollMode: game.settings.get('core', 'rollMode'),
             },
         );
         let d = new Dialog(
@@ -972,12 +971,12 @@ export async function wuerfelwurf(event, actor) {
         d.render(true);
     } else if (rolltype == 'simpleformula_diag') {
         label = $(event.currentTarget).data('name');
-        let formula = $(event.currentTarget).data('formula')
+        let formula = $(event.currentTarget).data('formula');
         const html = await renderTemplate(
             'systems/Ilaris/templates/chat/probendiag_simpleformula.html',
             {
                 rollModes: CONFIG.Dice.rollModes,
-                defaultRollMode: game.settings.get("core", "rollMode"),
+                defaultRollMode: game.settings.get('core', 'rollMode'),
             },
         );
         console.log('hier');
@@ -1011,7 +1010,7 @@ export async function wuerfelwurf(event, actor) {
                         label: 'Abbrechen',
                         callback: () => console.log('Chose Two'),
                     },
-                }
+                },
             },
             {
                 jQuery: true,
@@ -1023,11 +1022,11 @@ export async function wuerfelwurf(event, actor) {
         pw = Number($(event.currentTarget).data('pw'));
         let probentyp = $(event.currentTarget).data('probentyp');
         let spezialmod = 0;
-        if(probentyp == 'nahkampf') {
+        if (probentyp == 'nahkampf') {
             spezialmod = nahkampfmod;
         }
         let xd20 = '1';
-        if($(event.currentTarget).data('xd20') == '0') {
+        if ($(event.currentTarget).data('xd20') == '0') {
             xd20 = '0';
         }
         const html = await renderTemplate(
@@ -1038,7 +1037,7 @@ export async function wuerfelwurf(event, actor) {
                 choices_schips: CONFIG.ILARIS.schips_choice,
                 checked_schips: '0',
                 rollModes: CONFIG.Dice.rollModes,
-                defaultRollMode: game.settings.get("core", "rollMode"),
+                defaultRollMode: game.settings.get('core', 'rollMode'),
             },
         );
         let d = new Dialog(
@@ -1112,7 +1111,7 @@ export async function wuerfelwurf(event, actor) {
             checked_schips: '0',
             zere_choice: CONFIG.ILARIS.zere_choice,
             rollModes: CONFIG.Dice.rollModes,
-            defaultRollMode: game.settings.get("core", "rollMode"),
+            defaultRollMode: game.settings.get('core', 'rollMode'),
             manoever: item.system.manoever,
             item: item,
             // pw: pw
@@ -1155,16 +1154,14 @@ export async function wuerfelwurf(event, actor) {
                             if (mm_mezi > 0) {
                                 let erschwernis = 4;
                                 mod_pw -= erschwernis;
-                                text = text.concat(
-                                    `Mehrere Ziele: -${erschwernis}\n`,
-                                );
+                                text = text.concat(`Mehrere Ziele: -${erschwernis}\n`);
                             }
                             //  Reichweite erhoehen mm_rwrh
                             let mm_rwrh = Number(item.system.manoever.mm_rwrh.selected);
                             if (mm_rwrh > 0) {
-                                let erschwernis = 4 * mm_rwrh; 
+                                let erschwernis = 4 * mm_rwrh;
                                 mod_pw -= erschwernis;
-                                let multiplier = Math.pow(2,mm_rwrh); 
+                                let multiplier = Math.pow(2, mm_rwrh);
                                 // let reichweite = multiplyString(item.data.data.reichweite,multiplier);
                                 // text = text.concat(
                                 //     `Reichweite ${reichweite}: -${erschwernis}\n`,
@@ -1176,9 +1173,9 @@ export async function wuerfelwurf(event, actor) {
                             // Vorbereitung verkuerzen mm_vbvk
                             let mm_vbvk = Number(item.system.manoever.mm_vbvk.selected);
                             if (mm_vbvk > 0) {
-                                let erschwernis = 4 * mm_vbvk; 
+                                let erschwernis = 4 * mm_vbvk;
                                 mod_pw -= erschwernis;
-                                let multiplier = Math.pow(2,mm_vbvk); 
+                                let multiplier = Math.pow(2, mm_vbvk);
                                 // let vorbereitung = multiplyString(item.data.data.vorbereitung,1/multiplier);
                                 // if(vorbereitung == '0.5 Aktionen'){
                                 //     vorbereitung = '0 Aktionen';
@@ -1193,9 +1190,9 @@ export async function wuerfelwurf(event, actor) {
                             // Wirkungsdauer verlaengern mm_wkvl
                             let mm_wkvl = Number(item.system.manoever.mm_wkvl.selected);
                             if (mm_wkvl > 0) {
-                                let erschwernis = 4 * mm_wkvl; 
+                                let erschwernis = 4 * mm_wkvl;
                                 mod_pw -= erschwernis;
-                                let multiplier = Math.pow(2,mm_wkvl); 
+                                let multiplier = Math.pow(2, mm_wkvl);
                                 // let wirkungsdauer = multiplyString(item.data.data.wirkungsdauer,multiplier);
                                 // text = text.concat(
                                 //     `Wirkungsdauer ${wirkungsdauer}: -${erschwernis}\n`,
@@ -1207,7 +1204,7 @@ export async function wuerfelwurf(event, actor) {
                             // Zaubertechnik ignorieren mm_ztig
                             let mm_ztig = Number(item.system.manoever.mm_ztig.selected);
                             if (mm_ztig > 0) {
-                                let erschwernis = 4 * mm_ztig; 
+                                let erschwernis = 4 * mm_ztig;
                                 mod_pw -= erschwernis;
                                 text = text.concat(
                                     `Zaubertechnik ignorieren (${mm_ztig}x): -${erschwernis}\n`,
@@ -1215,35 +1212,44 @@ export async function wuerfelwurf(event, actor) {
                             }
                             // Erzwingen mm_erzw
                             // console.log('Erzwingen possible: ', item.data.data.manoever.mm_erzw.possible);
-                            if (item.system.manoever.mm_erzw.selected && item.system.manoever.mm_erzw.possible) {
+                            if (
+                                item.system.manoever.mm_erzw.selected &&
+                                item.system.manoever.mm_erzw.possible
+                            ) {
                                 mod_pw += 4;
                                 text = text.concat('Erzwingen: +4\n');
                             }
                             // Kosten sparen mm_kosp
                             let mm_kosp = Number(item.system.manoever.mm_kosp.selected);
-                            if (mm_kosp > 0  && item.system.manoever.mm_kosp.possible) {
-                                let erschwernis = 4 * mm_kosp; 
+                            if (mm_kosp > 0 && item.system.manoever.mm_kosp.possible) {
+                                let erschwernis = 4 * mm_kosp;
                                 mod_pw -= erschwernis;
                                 text = text.concat(
                                     `Kosten sparen (${mm_kosp}x): -${erschwernis}\n`,
                                 );
                             }
                             // Zeit lassen mm_ztls
-                            if (item.system.manoever.mm_ztls.selected && item.system.manoever.mm_ztls.possible) {
+                            if (
+                                item.system.manoever.mm_ztls.selected &&
+                                item.system.manoever.mm_ztls.possible
+                            ) {
                                 mod_pw += 2;
                                 text = text.concat('Zeit lassen: +2\n');
                             }
                             // Zeremonie mm_zere
                             let mm_zere = Number(item.system.manoever.mm_zere.selected);
-                            if (mm_zere > 0  && item.system.manoever.mm_zere.possible) {
-                                let erleichterung = 2+ 2 * mm_zere; 
+                            if (mm_zere > 0 && item.system.manoever.mm_zere.possible) {
+                                let erleichterung = 2 + 2 * mm_zere;
                                 mod_pw += erleichterung;
                                 text = text.concat(
                                     `Zeremonie (${CONFIG.ILARIS.zere_choice[mm_zere]}): +${erleichterung}\n`,
                                 );
                             }
                             // Opferung mm_opfe
-                            if (item.system.manoever.mm_opfe.selected && item.system.manoever.mm_opfe.possible) {
+                            if (
+                                item.system.manoever.mm_opfe.selected &&
+                                item.system.manoever.mm_opfe.possible
+                            ) {
                                 mod_pw += 4;
                                 text = text.concat('Opferung: +4\n');
                             }
@@ -1347,7 +1353,7 @@ export async function wuerfelwurf(event, actor) {
             checked_schips: '0',
             zere_choice: CONFIG.ILARIS.zere_choice,
             rollModes: CONFIG.Dice.rollModes,
-            defaultRollMode: game.settings.get("core", "rollMode"),
+            defaultRollMode: game.settings.get('core', 'rollMode'),
             manoever: item.system.manoever,
             item: item,
             // pw: pw
@@ -1390,16 +1396,14 @@ export async function wuerfelwurf(event, actor) {
                             if (lm_mezi > 0) {
                                 let erschwernis = 4;
                                 mod_pw -= erschwernis;
-                                text = text.concat(
-                                    `Mehrere Ziele: -${erschwernis}\n`,
-                                );
+                                text = text.concat(`Mehrere Ziele: -${erschwernis}\n`);
                             }
                             //  Reichweite erhoehen lm_rwrh
                             let lm_rwrh = Number(item.system.manoever.lm_rwrh.selected);
                             if (lm_rwrh > 0) {
-                                let erschwernis = 4 * lm_rwrh; 
+                                let erschwernis = 4 * lm_rwrh;
                                 mod_pw -= erschwernis;
-                                let multiplier = Math.pow(2,lm_rwrh); 
+                                let multiplier = Math.pow(2, lm_rwrh);
                                 text = text.concat(
                                     `Reichweite erhöhen (${multiplier}-fach): -${erschwernis}\n`,
                                 );
@@ -1407,9 +1411,9 @@ export async function wuerfelwurf(event, actor) {
                             // Vorbereitung verkuerzen lm_vbvk
                             let lm_vbvk = Number(item.system.manoever.lm_vbvk.selected);
                             if (lm_vbvk > 0) {
-                                let erschwernis = 4 * lm_vbvk; 
+                                let erschwernis = 4 * lm_vbvk;
                                 mod_pw -= erschwernis;
-                                let multiplier = Math.pow(2,lm_vbvk); 
+                                let multiplier = Math.pow(2, lm_vbvk);
                                 // let vorbereitung = multiplyString(item.data.data.vorbereitung,1/multiplier);
                                 // if(vorbereitung == '0.5 Aktionen'){
                                 //     vorbereitung = '0 Aktionen';
@@ -1424,9 +1428,9 @@ export async function wuerfelwurf(event, actor) {
                             // Wirkungsdauer verlaengern lm_wkvl
                             let lm_wkvl = Number(item.system.manoever.lm_wkvl.selected);
                             if (lm_wkvl > 0) {
-                                let erschwernis = 4 * lm_wkvl; 
+                                let erschwernis = 4 * lm_wkvl;
                                 mod_pw -= erschwernis;
-                                let multiplier = Math.pow(2,lm_wkvl); 
+                                let multiplier = Math.pow(2, lm_wkvl);
                                 text = text.concat(
                                     `Wirkungsdauer verlängern (${lm_wkvl}-fach): -${erschwernis}\n`,
                                 );
@@ -1434,7 +1438,7 @@ export async function wuerfelwurf(event, actor) {
                             // Zaubertechnik ignorieren lm_ltig
                             let lm_ltig = Number(item.system.manoever.lm_ltig.selected);
                             if (lm_ltig > 0) {
-                                let erschwernis = 4 * lm_ltig; 
+                                let erschwernis = 4 * lm_ltig;
                                 mod_pw -= erschwernis;
                                 text = text.concat(
                                     `Zaubertechnik ignorieren (${lm_ltig}x): -${erschwernis}\n`,
@@ -1442,8 +1446,8 @@ export async function wuerfelwurf(event, actor) {
                             }
                             // Kosten sparen lm_kosp
                             let lm_kosp = Number(item.system.manoever.lm_kosp.selected);
-                            if (lm_kosp > 0  && item.system.manoever.lm_kosp.possible) {
-                                let erschwernis = 4 * lm_kosp; 
+                            if (lm_kosp > 0 && item.system.manoever.lm_kosp.possible) {
+                                let erschwernis = 4 * lm_kosp;
                                 mod_pw -= erschwernis;
                                 text = text.concat(
                                     `Kosten sparen (${lm_kosp}x): -${erschwernis}\n`,
@@ -1451,15 +1455,18 @@ export async function wuerfelwurf(event, actor) {
                             }
                             // Zeremonie lm_zere
                             let lm_zere = Number(item.system.manoever.lm_zere.selected);
-                            if (lm_zere > 0  && item.system.manoever.lm_zere.possible) {
-                                let erleichterung = 2+ 2 * lm_zere; 
+                            if (lm_zere > 0 && item.system.manoever.lm_zere.possible) {
+                                let erleichterung = 2 + 2 * lm_zere;
                                 mod_pw += erleichterung;
                                 text = text.concat(
                                     `Zeremonie (${CONFIG.ILARIS.zere_choice[lm_zere]}): +${erleichterung}\n`,
                                 );
                             }
                             // Opferung lm_opfe
-                            if (item.system.manoever.lm_opfe.selected && item.system.manoever.lm_opfe.possible) {
+                            if (
+                                item.system.manoever.lm_opfe.selected &&
+                                item.system.manoever.lm_opfe.possible
+                            ) {
                                 mod_pw += 4;
                                 text = text.concat('Opferung: +4\n');
                             }

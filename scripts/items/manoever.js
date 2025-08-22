@@ -1,4 +1,4 @@
-import { IlarisItem } from "./item.js";
+import { IlarisItem } from './item.js';
 
 export class ManoeverItem extends IlarisItem {
     istNutzbar(actor, item) {

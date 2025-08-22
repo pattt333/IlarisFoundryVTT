@@ -2,7 +2,11 @@
 <div>
     {{#if actor.system.modifikatoren.nahkampfmod}}
     <div class="flexrow" style="float: right">
-        <b><label style="color: {{modColor actor.system.modifikatoren.nahkampfmod}}">{{actor.system.abgeleitete.nahkampfmoddisplay}}</label></b>
+        <b
+            ><label style="color: {{modColor actor.system.modifikatoren.nahkampfmod}}"
+                >{{actor.system.abgeleitete.nahkampfmoddisplay}}</label
+            ></b
+        >
     </div>
     {{/if}}
     <h2>Nahkampfwaffen</h2>
@@ -164,7 +168,10 @@
         </div>
         {{#each actor.fernkampfwaffen as |fwaffe key|}}
         <div class="flexrow">
-            <a class="rollable icon-small" data-rolltype="fernkampf_diag" data-itemid="{{fwaffe.id}}"
+            <a
+                class="rollable icon-small"
+                data-rolltype="fernkampf_diag"
+                data-itemid="{{fwaffe.id}}"
                 ><i class="fas fa-dice-d20"></i
             ></a>
             <a

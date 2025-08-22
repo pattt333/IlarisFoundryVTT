@@ -8,12 +8,14 @@ export class IlarisActorSheet extends ActorSheet {
     */
     async getData() {
         const context = super.getData();
-        console.log(context)
+        console.log(context);
 
-        context.enrichedBiography = await TextEditor.enrichHTML(this.actor.system.notes, {async: true});
+        context.enrichedBiography = await TextEditor.enrichHTML(this.actor.system.notes, {
+            async: true,
+        });
         return context;
     }
-    
+
     activateListeners(html) {
         super.activateListeners(html);
         html.find('.ausklappen-trigger').click((ev) => this._ausklappView(ev));
@@ -47,7 +49,6 @@ export class IlarisActorSheet extends ActorSheet {
         let bool_status = getProperty(this.actor, attr);
         await this.actor.update({ [attr]: !bool_status });
     }
-
 
     async _onToggleItem(event) {
         const itemId = event.currentTarget.dataset.itemid;
@@ -102,15 +103,15 @@ export class IlarisActorSheet extends ActorSheet {
             let speaker = ChatMessage.getSpeaker({ actor: this.actor });
             await roll.evaluate({ async: true });
             const html_roll = await renderTemplate(
-                'systems/Ilaris/templates/chat/probenchat_profan.html', 
-                {title: `${label}`}
+                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                { title: `${label}` },
             );
             // console.log(html_roll);
             roll.toMessage({
                 speaker: speaker,
                 flavor: html_roll,
             });
-            return 0
+            return 0;
         }
         let globalermod = systemData.abgeleitete.globalermod;
         let pw = 0;
@@ -119,21 +120,21 @@ export class IlarisActorSheet extends ActorSheet {
         // TODO: rolltype=dialog, diagtype=nahkampf/profan/simple usw..
         let dialoge = [
             'angriff_diag',
-            'profan_fertigkeit_diag', 
-            'nahkampf_diag', 
-            'attribut_diag', 
-            'simpleprobe_diag', 
-            'simpleformula_diag', 
-            'fernkampf_diag', 
-            'freie_fertigkeit_diag', 
-            'magie_diag', 
+            'profan_fertigkeit_diag',
+            'nahkampf_diag',
+            'attribut_diag',
+            'simpleprobe_diag',
+            'simpleformula_diag',
+            'fernkampf_diag',
+            'freie_fertigkeit_diag',
+            'magie_diag',
             'karma_diag',
-            'uefert_diag'
-        ]
-        console.log("rolltype");
+            'uefert_diag',
+        ];
+        console.log('rolltype');
         console.log(rolltype);
         if (dialoge.includes(rolltype)) {
-            console.log("diag")
+            console.log('diag');
             wuerfelwurf(event, this.actor);
             return 0;
         }
@@ -168,8 +169,8 @@ export class IlarisActorSheet extends ActorSheet {
         //     console.log(event);
         //     wuerfelwurf(event, this.actor);
         //     return 0;
-        // } else 
-        if (rolltype == 'at') { 
+        // } else
+        if (rolltype == 'at') {
             // TODO: simplify this: if rolltype in [...]
             dice = '1d20';
             label = $(event.currentTarget).data('item');
@@ -264,7 +265,7 @@ export class IlarisActorSheet extends ActorSheet {
                 // speaker: speaker.alias,
                 title: `${label}`,
                 crit: crit,
-                fumble: fumble //,wunden
+                fumble: fumble, //,wunden
             },
         );
         // console.log(html_roll);
@@ -311,8 +312,9 @@ export class IlarisActorSheet extends ActorSheet {
         // console.log("HpUpdate");
         // this.actor.token.refresh();
         // console.log(event);
-        let einschraenkungen =
-            Math.floor(this.actor.system.gesundheit.wunden + this.actor.system.gesundheit.erschoepfung);
+        let einschraenkungen = Math.floor(
+            this.actor.system.gesundheit.wunden + this.actor.system.gesundheit.erschoepfung,
+        );
         // let old_hp = this.actor.data.data.gesundheit.hp.value;
         let new_hp = this.actor.system.gesundheit.hp.max - einschraenkungen;
         // this.actor.data.data.gesundheit.hp.value = new_hp;
@@ -351,21 +353,19 @@ export class IlarisActorSheet extends ActorSheet {
         this.actor.update({ 'system.misc.selected_kampfstil': selected_kampfstil });
     }
 
-
     _onDropItemCreate(item) {
-        if (item.type == "manoever") {
-            let bogen = "Bogen";
-            if (this.actor.type == "held") {
-                bogen = "Heldenbogen";
+        if (item.type == 'manoever') {
+            let bogen = 'Bogen';
+            if (this.actor.type == 'held') {
+                bogen = 'Heldenbogen';
             } else {
-                bogen = "Werteblock";
+                bogen = 'Werteblock';
             }
             Dialog.prompt({
                 content: `Manöver stehen automatisch zur Verfügung, wenn die Vorraussetzungen erfüllt sind. Um ein neues aufbauendes Manöver zu lernen, ziehe den Entsprechenden Vorteil auf den ${bogen}.`,
                 callback: () => {},
-              });
-        }
-        else {
+            });
+        } else {
             super._onDropItemCreate(item);
         }
     }
@@ -381,8 +381,8 @@ export class IlarisActorSheet extends ActorSheet {
         // console.log(event.currentTarget.dataset.itemclass);
 
         // Das koennte extrem verkuerzt werden, wenn man einfach die namen (ggf. data) als
-        // dict schreibt und itemData = {name: names[type], data: datas[type], type: type} 
-        // statt den ganzen ifs benutzt.. 
+        // dict schreibt und itemData = {name: names[type], data: datas[type], type: type}
+        // statt den ganzen ifs benutzt..
         let itemData = {};
         if (itemclass == 'ruestung') {
             console.log('Neue Rüstung');
@@ -481,13 +481,13 @@ export class IlarisActorSheet extends ActorSheet {
             };
             itemData.system.profan = false;
         } else if (itemclass == 'vorteil') {
-            game.packs.get("Ilaris.vorteile").render(true);
+            game.packs.get('Ilaris.vorteile').render(true);
             Dialog.prompt({
-                content: "Du kannst Vorteile direkt aus den Kompendium Packs auf den Statblock ziehen. Für eigene Vor/Nachteile zu erstellen, die nicht im Regelwerk enthalten sind, benutze die Eigenschaften.",
+                content:
+                    'Du kannst Vorteile direkt aus den Kompendium Packs auf den Statblock ziehen. Für eigene Vor/Nachteile zu erstellen, die nicht im Regelwerk enthalten sind, benutze die Eigenschaften.',
                 callback: () => {},
-              });
-        } 
-        else  {
+            });
+        } else {
             console.log('Neues generisches Item');
             console.log(itemclass);
             itemData = {
@@ -590,5 +590,4 @@ export class IlarisActorSheet extends ActorSheet {
         this.actor.deleteEmbeddedDocuments('Item', [itemID]);
         // li.slideUp(200, () => this.render(false));
     }
-
 }

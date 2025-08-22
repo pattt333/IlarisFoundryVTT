@@ -149,10 +149,8 @@ export function getKampfstile(actor) {
         kampfstile.push('kvk');
     if (actor.vorteil.kampfstil.find((x) => x.name.includes('Parierwaffenkampf')))
         kampfstile.push('pwk');
-    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Reiterkampf')))
-        kampfstile.push('rtk');
-    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Schildkampf')))
-        kampfstile.push('shk');
+    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Reiterkampf'))) kampfstile.push('rtk');
+    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Schildkampf'))) kampfstile.push('shk');
     if (actor.vorteil.kampfstil.find((x) => x.name.includes('Schneller Kampf')))
         kampfstile.push('snk');
     return kampfstile;
@@ -166,14 +164,11 @@ export function getKampfstilStufe(stil, actor) {
     // "shk": "Schildkampf",
     // "snk": "Schneller Kampf"
     let stufe = 0;
-    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} I`))
-        stufe = 1;
-    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} II`))
-        stufe = 2;
+    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} I`)) stufe = 1;
+    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} II`)) stufe = 2;
     if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} III`))
         stufe = 3;
-    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} IV`))
-        stufe = 4;
+    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} IV`)) stufe = 4;
     return stufe;
 }
 
@@ -188,9 +183,7 @@ export function getAngepasst(angepasst_string, actor) {
 
 export function magieErzwingenPossible(actor) {
     let possible = false;
-    if (
-        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Anach-Nurim III')
-    ) {
+    if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Anach-Nurim III')) {
         possible = true;
     } else if (
         actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Anach-Nurim IV')
@@ -204,29 +197,17 @@ export function magieErzwingenPossible(actor) {
         actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Borbaradianer IV')
     ) {
         possible = true;
-    } else if (
-        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Druiden III')
-    ) {
+    } else if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Druiden III')) {
         possible = true;
-    } else if (
-        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Druiden IV')
-    ) {
+    } else if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Druiden IV')) {
         possible = true;
-    } else if (
-        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Hexen III')
-    ) {
+    } else if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Hexen III')) {
         possible = true;
-    } else if (
-        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Hexen IV')
-    ) {
+    } else if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Hexen IV')) {
         possible = true;
-    } else if (
-        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schelme III')
-    ) {
+    } else if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schelme III')) {
         possible = true;
-    } else if (
-        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schelme IV')
-    ) {
+    } else if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schelme IV')) {
         possible = true;
     }
     return possible;
@@ -242,29 +223,19 @@ export function magieKostenSparenPossible(actor) {
 
 export function magieZeitLassenPossible(actor) {
     let possible = false;
-    if (
-        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Alchemisten III')
-    ) {
+    if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Alchemisten III')) {
         possible = true;
     } else if (
         actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Alchemisten IV')
     ) {
         possible = true;
-    } else if (
-        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Elfen III')
-    ) {
+    } else if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Elfen III')) {
         possible = true;
-    } else if (
-        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Elfen IV')
-    ) {
+    } else if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Elfen IV')) {
         possible = true;
-    } else if (
-        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Geoden III')
-    ) {
+    } else if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Geoden III')) {
         possible = true;
-    } else if (
-        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Geoden IV')
-    ) {
+    } else if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Geoden IV')) {
         possible = true;
     } else if (
         actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Gildenmagier III')
@@ -275,15 +246,11 @@ export function magieZeitLassenPossible(actor) {
     ) {
         possible = true;
     } else if (
-        actor.vorteil.zaubertraditionen.find(
-            (x) => x.name == 'Tradition der Kristallomanten III',
-        )
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Kristallomanten III')
     ) {
         possible = true;
     } else if (
-        actor.vorteil.zaubertraditionen.find(
-            (x) => x.name == 'Tradition der Kristallomanten IV',
-        )
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Kristallomanten IV')
     ) {
         possible = true;
     } else if (
@@ -321,9 +288,7 @@ export function magieZeremoniePossible(actor) {
 
 export function magieOpferungPossible(actor) {
     let possible = false;
-    if (
-        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Durro-dun III')
-    ) {
+    if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Durro-dun III')) {
         possible = true;
     } else if (
         actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Durro-dun IV')
@@ -352,7 +317,9 @@ export function karmaKostenSparenPossible(actor) {
 export function karmaZeremoniePossible(actor) {
     let possible = false;
 
-    if (actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Borongeweihten III')) {
+    if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Borongeweihten III')
+    ) {
         possible = true;
     } else if (
         actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Borongeweihten IV')
@@ -435,7 +402,9 @@ export function karmaOpferungPossible(actor) {
     ) {
         possible = true;
     } else if (
-        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ingerimmgeweihten III')
+        actor.vorteil.geweihtentradition.find(
+            (x) => x.name == 'Tradition der Ingerimmgeweihten III',
+        )
     ) {
         possible = true;
     } else if (

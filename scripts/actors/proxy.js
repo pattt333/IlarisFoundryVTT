@@ -1,13 +1,13 @@
-import { IlarisActor } from "./actor.js";
-import { HeldActor } from "./held.js";
-import { KreaturActor } from "./kreatur.js";
+import { IlarisActor } from './actor.js';
+import { HeldActor } from './held.js';
+import { KreaturActor } from './kreatur.js';
 
 const handler = {
     construct(_, args) {
         switch (args[0]?.type) {
-            case "held":
+            case 'held':
                 return new HeldActor(...args);
-            case "kreatur":
+            case 'kreatur':
                 return new KreaturActor(...args);
             default:
                 return new IlarisActor(...args);

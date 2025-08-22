@@ -3,47 +3,49 @@ export const ILARIS = {};
 let stat_desc = {
     ws: {
         name: 'Wundschwelle',
-        short: "WS",
-        text: "Schaden der erforderlich ist um eine Wunde zu verursachen (ohne Rüstung)."
+        short: 'WS',
+        text: 'Schaden der erforderlich ist um eine Wunde zu verursachen (ohne Rüstung).',
     },
     ws_stern: {
         name: 'Effektive Wundschwelle',
         short: 'WS*',
-        text: 'Schaden der erforderlich ist um eine Wunde zu verursachen (mit Rüstung).'
+        text: 'Schaden der erforderlich ist um eine Wunde zu verursachen (mit Rüstung).',
     },
     ini: {
         name: 'Initiative',
-        short: "INI"
+        short: 'INI',
     },
-    koloss: { // TODO: move to eigenschaften? #18
+    koloss: {
+        // TODO: move to eigenschaften? #18
         name: 'Koloss',
         short: 'KOL',
     },
     gs: {
         name: 'Geschwindigkeit',
-        short: "GS"
+        short: 'GS',
     },
     gs_schwimmend: {
         name: 'Geschwindigkeit (schwimmend)',
-        short: 'GSS'
+        short: 'GSS',
     },
     gs_fliegend: {
         name: 'Geschwindigkeit (fliegend)',
-        short: 'GSF'
+        short: 'GSF',
     },
     gs_reitend: {
         name: 'Geschwindigkeit (reitend)',
-        short: 'GSR'
+        short: 'GSR',
     },
-    schips: { // TODO: remove schips completly? #19
+    schips: {
+        // TODO: remove schips completly? #19
         name: 'Schicksalspunkte',
-        short: "SIP"
+        short: 'SIP',
     },
     mr: {
         name: 'Magieresistenz',
-        short: "MR"
-    }
-}
+        short: 'MR',
+    },
+};
 ILARIS.stat_desc = stat_desc;
 
 let label = {
@@ -595,7 +597,7 @@ let manoever_magie = {
     // rollmode
     rllm: {
         selected: 'roll',
-    }
+    },
 };
 ILARIS.manoever_magie = manoever_magie;
 
@@ -661,14 +663,14 @@ let manoever_karma = {
 ILARIS.manoever_karma = manoever_karma;
 
 let kreatur_item_options = {
-    angriff:"Angriff",
-    eigenschaft:"Eigenschaft",
-    vorteil:"Vorteil",
-    freiestalent:"Fertigkeit",
-    uebernatfreiestalent:"Übernat. Fertigkeit",
-    zauber:"Zauber",
-    liturgie:"Liturgie",
-    anrufung:"Anrufung",
-    info:"Info"
+    angriff: 'Angriff',
+    eigenschaft: 'Eigenschaft',
+    vorteil: 'Vorteil',
+    freiestalent: 'Fertigkeit',
+    uebernatfreiestalent: 'Übernat. Fertigkeit',
+    zauber: 'Zauber',
+    liturgie: 'Liturgie',
+    anrufung: 'Anrufung',
+    info: 'Info',
 };
 ILARIS.kreatur_item_options = kreatur_item_options;
