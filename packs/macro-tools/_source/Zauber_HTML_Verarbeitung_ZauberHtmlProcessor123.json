@@ -1,0 +1,26 @@
+{
+  "name": "Zauber HTML Verarbeitung",
+  "type": "script",
+  "author": "system",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "scope": "global",
+  "command": "// Verarbeite Zauber und Liturgien mit HTML-Inhalten\n// Process spells and liturgies with HTML content\n\nif (!game.sephrasto) {\n    ui.notifications.error('SephrastoImporter ist nicht verfügbar. Das System muss möglicherweise neu geladen werden.');\n} else {\n    ui.notifications.info('Beginne mit der Verarbeitung von Zauber-HTML-Inhalten...');\n    \n    game.sephrasto.processSpellsWithHtmlContent().then(count => {\n        if (count > 0) {\n            ui.notifications.info(`Verarbeitung abgeschlossen. ${count} Zauber/Liturgien wurden aktualisiert.`);\n        } else {\n            ui.notifications.info('Keine Zauber mit HTML-Inhalten gefunden, die verarbeitet werden müssen.');\n        }\n    }).catch(error => {\n        console.error('Fehler bei der HTML-Verarbeitung:', error);\n        ui.notifications.error('Fehler bei der Verarbeitung der Zauber-HTML-Inhalte. Siehe Konsole für Details.');\n    });\n}",
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "ZauberHtmlProcessor123",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!macros!ZauberHtmlProcessor123"
+}

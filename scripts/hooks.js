@@ -259,6 +259,40 @@ Hooks.once('init', () => {
     registerIlarisGameSettings()
 })
 
+Hooks.once('ready', () => {
+    // Add console helper for HTML spell processing
+    window.processSpellHtmlContent = async () => {
+        if (!game.sephrasto) {
+            console.error('SephrastoImporter not available')
+            ui.notifications.error('SephrastoImporter ist nicht verfügbar.')
+            return
+        }
+
+        console.log('Processing spells with HTML content...')
+        ui.notifications.info('Verarbeite Zauber mit HTML-Inhalten...')
+
+        try {
+            const count = await game.sephrasto.processSpellsWithHtmlContent()
+            console.log(`Processed ${count} spells with HTML content`)
+            if (count > 0) {
+                ui.notifications.info(
+                    `${count} Zauber/Liturgien wurden verarbeitet und aktualisiert.`,
+                )
+            } else {
+                ui.notifications.info('Keine Zauber mit HTML-Inhalten zum Verarbeiten gefunden.')
+            }
+        } catch (error) {
+            console.error('Error processing spell HTML content:', error)
+            ui.notifications.error('Fehler bei der Verarbeitung. Siehe Konsole für Details.')
+        }
+    }
+
+    // Log availability
+    console.log(
+        'Ilaris HTML Spell Processor loaded. Use processSpellHtmlContent() in console to process spells with HTML content.',
+    )
+})
+
 Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
     console.log(data)
     console.log(actor)
