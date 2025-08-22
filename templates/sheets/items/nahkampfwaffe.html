@@ -97,18 +97,19 @@
                 <label class="flex-fest-var" style="flex-basis: 100px"
                     ><b>Eigenschaften: </b></label
                 >
-                <span>
+                <div>
                     {{#each item.system.eigenschaften as |val key|}}
-                    <label>| {{get_label key}}: </label>
-                    <input
-                        name="system.eigenschaften.{{key}}"
-                        data-dtype="Boolean"
-                        type="checkbox"
-                        {{checked
-                        val}}
-                    />
+                    <span>
+                        <label>| {{get_label key}}: </label>
+                        <input
+                            name="system.eigenschaften.{{key}}"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked val}}
+                        />
+                    </span>
                     {{/each}}
-                </span>
+                </div>
             </div>
             {{#if hasOwner}}
             <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigene Mod.: </b></label>
