@@ -3,17 +3,31 @@ import { IlarisActor } from './actor.js'
 export class KreaturActor extends IlarisActor {
     async _preCreate(data, options, user) {
         foundry.utils.mergeObject(data, {
-            'token.bar1': { attribute: 'gesundheit.hp' },
-            'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
-            'token.displayBars': CONST.TOKEN_DISPLAY_MODES.ALWAYS,
-            'token.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
-            'token.name': data.name,
+            'prototypeToken.bar1': { attribute: 'gesundheit.hp' },
+            'prototypeToken.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
+            'prototypeToken.displayBars': CONST.TOKEN_DISPLAY_MODES.ALWAYS,
+            'prototypeToken.disposition': CONST.TOKEN_DISPOSITIONS.NEUTRAL,
+            'prototypeToken.name': data.name,
         })
-        data.token.disposition = CONST.TOKEN_DISPOSITIONS.NEUTRAL
         if (!data.img) {
             data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/tier.png'
         }
         await super._preCreate(data, options, user) // IlarisActor._preCreate() -> Actor._preCreate()
+    }
+
+    /**
+     * Override token creation to inherit actor image when token image is empty
+     */
+    async getTokenData(data = {}) {
+        const tokenData = await super.getTokenData(data)
+
+        // If no texture source is explicitly set on the token, inherit from actor
+        if (!tokenData.texture?.src && this.img) {
+            tokenData.texture = tokenData.texture || {}
+            tokenData.texture.src = this.img
+        }
+
+        return tokenData
     }
 
     prepareData() {
