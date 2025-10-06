@@ -23,12 +23,29 @@ export class HeldActor extends IlarisActor {
             'prototypeToken.name': data.name,
             'prototypeToken.actorLink': true,
         })
-        data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png'
+        if (!data.img) {
+            data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png'
+        }
         data.prototypeToken.vision = true
         data.prototypeToken.actorLink = true
         data.prototypeToken.brightSight = 15
         data.prototypeToken.dimSight = 5
         await super._preCreate(data, options, user) // IlarisActor._preCreate() -> Actor._preCreate()
+    }
+
+    /**
+     * Override token creation to inherit actor image when token image is empty
+     */
+    async getTokenData(data = {}) {
+        const tokenData = await super.getTokenData(data)
+
+        // If no texture source is explicitly set on the token, inherit from actor
+        if (!tokenData.texture?.src && this.img) {
+            tokenData.texture = tokenData.texture || {}
+            tokenData.texture.src = this.img
+        }
+
+        return tokenData
     }
 
     /** @override */
